@@ -1,0 +1,1 @@
+../../../AVOSCloudIM/iOS/release-v3.0.2/AVOSCloudIM.framework/Headers/AVIMVideoMessage.h

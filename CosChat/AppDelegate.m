@@ -7,7 +7,9 @@
 //
 
 #import "AppDelegate.h"
-
+#import "WKRolePickController.h"
+#import "WKWelcomeController.h"
+#import "WKNavigationController.h"
 @interface AppDelegate ()
 
 @end
@@ -16,10 +18,20 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    // 状态栏样式
+    [application setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstStart"]){
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstStart"];
+        WKWelcomeController *welcomeController = [[WKWelcomeController alloc] init];
+        self.window.rootViewController = welcomeController;
+    }else{
+        WKRolePickController *rolePick = [[WKRolePickController alloc] init];
+        WKNavigationController *nav = [[WKNavigationController alloc] initWithRootViewController:rolePick];
+        self.window.rootViewController = nav;
+    }
     return YES;
 }
-
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
