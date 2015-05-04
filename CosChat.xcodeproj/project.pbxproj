@@ -13,6 +13,12 @@
 		4D1019C11AF101060033FDE6 /* WKRoleIntroduceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1019BE1AF101060033FDE6 /* WKRoleIntroduceViewController.m */; };
 		4D1019CB1AF103360033FDE6 /* WKSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1019CA1AF103360033FDE6 /* WKSettingViewController.m */; };
 		4D1019CE1AF104C30033FDE6 /* WKMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1019CD1AF104C30033FDE6 /* WKMainViewController.m */; };
+		4D6B657C1AF72A7E00B71CE7 /* Chopper.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6B657B1AF72A7E00B71CE7 /* Chopper.png */; };
+		4D6B65851AF72B0E00B71CE7 /* WKRoleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D6B65841AF72B0E00B71CE7 /* WKRoleCell.m */; };
+		4D6EB1501AF6499F00CD7360 /* UIImage+Circle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D6EB14F1AF6499F00CD7360 /* UIImage+Circle.m */; };
+		4D6EB1531AF64AD300CD7360 /* WKRoleInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D6EB1521AF64AD300CD7360 /* WKRoleInfo.m */; };
+		4D6EB1571AF64B1200CD7360 /* WKRoleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D6EB1561AF64B1200CD7360 /* WKRoleView.m */; };
+		4D6EB1591AF6543100CD7360 /* superman.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6EB1581AF6543100CD7360 /* superman.png */; };
 		4D781D041AF0BF370049D0F5 /* WKRolePickController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D031AF0BF370049D0F5 /* WKRolePickController.m */; };
 		4D781D1B1AF0D3DC0049D0F5 /* WKMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D141AF0D3DC0049D0F5 /* WKMenuItem.m */; };
 		4D781D1C1AF0D3DC0049D0F5 /* WKMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D161AF0D3DC0049D0F5 /* WKMenuView.m */; };
@@ -53,6 +59,17 @@
 		4D1019CA1AF103360033FDE6 /* WKSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKSettingViewController.m; sourceTree = "<group>"; };
 		4D1019CC1AF104C30033FDE6 /* WKMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKMainViewController.h; sourceTree = "<group>"; };
 		4D1019CD1AF104C30033FDE6 /* WKMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKMainViewController.m; sourceTree = "<group>"; };
+		4D6B657B1AF72A7E00B71CE7 /* Chopper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chopper.png; sourceTree = "<group>"; };
+		4D6B65831AF72B0E00B71CE7 /* WKRoleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKRoleCell.h; sourceTree = "<group>"; };
+		4D6B65841AF72B0E00B71CE7 /* WKRoleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKRoleCell.m; sourceTree = "<group>"; };
+		4D6EB14E1AF6499F00CD7360 /* UIImage+Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Circle.h"; sourceTree = "<group>"; };
+		4D6EB14F1AF6499F00CD7360 /* UIImage+Circle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Circle.m"; sourceTree = "<group>"; };
+		4D6EB1511AF64AD300CD7360 /* WKRoleInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKRoleInfo.h; sourceTree = "<group>"; };
+		4D6EB1521AF64AD300CD7360 /* WKRoleInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKRoleInfo.m; sourceTree = "<group>"; };
+		4D6EB1551AF64B1200CD7360 /* WKRoleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKRoleView.h; sourceTree = "<group>"; };
+		4D6EB1561AF64B1200CD7360 /* WKRoleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKRoleView.m; sourceTree = "<group>"; };
+		4D6EB1581AF6543100CD7360 /* superman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = superman.png; sourceTree = "<group>"; };
+		4D6EB15E1AF6692200CD7360 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		4D781D021AF0BF370049D0F5 /* WKRolePickController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKRolePickController.h; sourceTree = "<group>"; };
 		4D781D031AF0BF370049D0F5 /* WKRolePickController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKRolePickController.m; sourceTree = "<group>"; };
 		4D781D131AF0D3DC0049D0F5 /* WKMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKMenuItem.h; sourceTree = "<group>"; };
@@ -233,6 +250,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		4D6EB1541AF64B1200CD7360 /* RoleView */ = {
+			isa = PBXGroup;
+			children = (
+				4D6EB1551AF64B1200CD7360 /* WKRoleView.h */,
+				4D6EB1561AF64B1200CD7360 /* WKRoleView.m */,
+			);
+			path = RoleView;
+			sourceTree = "<group>";
+		};
 		4D781CFA1AF0BEE70049D0F5 /* Class */ = {
 			isa = PBXGroup;
 			children = (
@@ -268,6 +294,8 @@
 		4D781CFF1AF0BEFC0049D0F5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4D6EB1511AF64AD300CD7360 /* WKRoleInfo.h */,
+				4D6EB1521AF64AD300CD7360 /* WKRoleInfo.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -275,7 +303,10 @@
 		4D781D001AF0BEFC0049D0F5 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4D6EB1541AF64B1200CD7360 /* RoleView */,
 				4D781D121AF0D3DC0049D0F5 /* PageView */,
+				4D6B65831AF72B0E00B71CE7 /* WKRoleCell.h */,
+				4D6B65841AF72B0E00B71CE7 /* WKRoleCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -300,6 +331,8 @@
 			children = (
 				4D781D201AF0D46C0049D0F5 /* UIColor+Random.h */,
 				4D781D211AF0D46C0049D0F5 /* UIColor+Random.m */,
+				4D6EB14E1AF6499F00CD7360 /* UIImage+Circle.h */,
+				4D6EB14F1AF6499F00CD7360 /* UIImage+Circle.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -337,6 +370,8 @@
 		4DF41F561AE6A764008D0BFA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4D6EB1581AF6543100CD7360 /* superman.png */,
+				4D6B657B1AF72A7E00B71CE7 /* Chopper.png */,
 				4DF41F631AE6A764008D0BFA /* Images.xcassets */,
 				4DF41F5A1AE6A764008D0BFA /* AppDelegate.h */,
 				4DF41F5B1AE6A764008D0BFA /* AppDelegate.m */,
@@ -344,6 +379,7 @@
 				4DF41F651AE6A764008D0BFA /* LaunchScreen.xib */,
 				4DF41F571AE6A764008D0BFA /* Info.plist */,
 				4DF41F581AE6A764008D0BFA /* main.m */,
+				4D6EB15E1AF6692200CD7360 /* Common.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -459,6 +495,8 @@
 			files = (
 				4DF41F621AE6A764008D0BFA /* Main.storyboard in Resources */,
 				4DF41F671AE6A764008D0BFA /* LaunchScreen.xib in Resources */,
+				4D6B657C1AF72A7E00B71CE7 /* Chopper.png in Resources */,
+				4D6EB1591AF6543100CD7360 /* superman.png in Resources */,
 				4DF41F641AE6A764008D0BFA /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,16 +551,20 @@
 				4DF41F5C1AE6A764008D0BFA /* AppDelegate.m in Sources */,
 				4D781D1B1AF0D3DC0049D0F5 /* WKMenuItem.m in Sources */,
 				4D1019AE1AF0F45A0033FDE6 /* WKWelcomeController.m in Sources */,
+				4D6B65851AF72B0E00B71CE7 /* WKRoleCell.m in Sources */,
 				4D781D1D1AF0D3DC0049D0F5 /* WKPageCell.m in Sources */,
 				4D1019CB1AF103360033FDE6 /* WKSettingViewController.m in Sources */,
 				4D781D041AF0BF370049D0F5 /* WKRolePickController.m in Sources */,
 				4D1019BA1AF0FF3C0033FDE6 /* WKPersonalSignatureViewController.m in Sources */,
 				4D1019C11AF101060033FDE6 /* WKRoleIntroduceViewController.m in Sources */,
+				4D6EB1501AF6499F00CD7360 /* UIImage+Circle.m in Sources */,
 				4D781D221AF0D46C0049D0F5 /* UIColor+Random.m in Sources */,
 				4D781D1C1AF0D3DC0049D0F5 /* WKMenuView.m in Sources */,
 				4D781D1E1AF0D3DC0049D0F5 /* WKPageView.m in Sources */,
 				4D1019CE1AF104C30033FDE6 /* WKMainViewController.m in Sources */,
 				4DF41F591AE6A764008D0BFA /* main.m in Sources */,
+				4D6EB1531AF64AD300CD7360 /* WKRoleInfo.m in Sources */,
+				4D6EB1571AF64B1200CD7360 /* WKRoleView.m in Sources */,
 				4D1019B31AF0F7D20033FDE6 /* WKNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

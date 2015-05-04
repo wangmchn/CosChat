@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WKPageCell : UIScrollView
+@interface WKPageCell : UICollectionView
 @property (nonatomic, copy) NSString *identifier;
 - (id)initWithIdentifier:(NSString *)identifier;
 @end

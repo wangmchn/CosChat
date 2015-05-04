@@ -10,6 +10,7 @@
 #import "WKMenuView.h"
 #import "WKPageCell.h"
 #define kDefaultMH 30
+#define kLineSpacing 0
 @interface WKPageView () <UIScrollViewDelegate, WKMenuViewDelegate>{
     BOOL animate;
 }
@@ -82,9 +83,10 @@
 // 添加主滚动视图
 - (void)addScrollView{
     CGFloat x = 0;
-    CGFloat y = self.menuViewHeight;
+    CGFloat y = self.menuViewHeight + kLineSpacing;
     CGFloat width = self.frame.size.width;
-    CGFloat height = self.frame.size.height - self.menuViewHeight;
+    CGFloat height = self.frame.size.height - y;
+    
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(x, y, width, height)];
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
