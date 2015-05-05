@@ -2,100 +2,93 @@
 //  WKSettingViewController.m
 //  CosChat
 //
-//  Created by Mark on 15/4/29.
-//  Copyright (c) 2015年 yq. All rights reserved.
+//  Created by zzx🐹 on 15/4/30.
+//  Copyright (c) 2015年 WeiKe. All rights reserved.
 //
 
 #import "WKSettingViewController.h"
-
+#import "WKSettingItem.h"
+#import "WKMainViewController.h"
 @interface WKSettingViewController ()
 
 @end
 
 @implementation WKSettingViewController
+-(id)init
+{
+    return  [super initWithStyle:UITableViewStyleGrouped];
+}
+-(id)initWithStyle:(UITableViewStyle)style
+{
+    return [super initWithStyle:UITableViewStyleGrouped];
+}
+
+-(NSArray*)data
+{
+    if (_data==nil) {
+        _data=[NSMutableArray array];
+        
+        
+        WKSettingItem *item00=[WKSettingItem itemWithTitle:@"第一行" vcClass:[WKMainViewController class] ];
+        WKSettingItem *item01=[WKSettingItem itemWithTitle:@"第二行" vcClass:[WKMainViewController class] ];
+        NSArray *array0=@[item00,item01];
+        
+        WKSettingItem *item10=[WKSettingItem itemWithTitle:@"第一行" vcClass:[WKMainViewController class] ];
+        WKSettingItem *item11=[WKSettingItem itemWithTitle:@"第二行" vcClass:[WKMainViewController class] ];
+        NSArray *array1=@[item10,item11];
+        
+        [_data addObject:array0];
+        [_data addObject:array1];
+        
+    }
+    return _data;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"设置";
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
+    // 1.标题
+    self.title = @"设置";
+    
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    
+    return self.data.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    NSArray *subdata=self.data[section];
+    return subdata.count;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
-    // Configure the cell...
-    
+
+    static NSString *CellIdentifer=@"setting";
+    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:CellIdentifer];
+    if (cell==nil) {
+        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifer];
+    }
+    WKSettingItem *item=self.data[indexPath.section][indexPath.row];
+    cell.textLabel.text=item.title;
+    // 3.返回cell
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // 1.取消选中这行
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+
+    WKSettingItem *item=self.data[indexPath.section][indexPath.row];
+    UIViewController *vc=[[item.vcClass alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

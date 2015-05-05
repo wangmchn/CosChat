@@ -10,7 +10,7 @@
 #import "WKMenuView.h"
 #import "WKPageCell.h"
 #define kDefaultMH 30
-#define kLineSpacing 0
+#define kLineSpacing 0.5
 @interface WKPageView () <UIScrollViewDelegate, WKMenuViewDelegate>{
     BOOL animate;
 }
@@ -82,7 +82,7 @@
 }
 // 添加主滚动视图
 - (void)addScrollView{
-    CGFloat x = 0;
+    CGFloat x = kLineSpacing/2;
     CGFloat y = self.menuViewHeight + kLineSpacing;
     CGFloat width = self.frame.size.width;
     CGFloat height = self.frame.size.height - y;
@@ -151,7 +151,7 @@
             }
         }
     }
-    NSLog(@"NumberOfCellsInScreen: %lu",(unsigned long)self.scrollView.subviews.count);
+//    NSLog(@"NumberOfCellsInScreen: %lu",(unsigned long)self.scrollView.subviews.count);
 }
 // 清空所有数组，字典，并移除所有子控件
 - (void)clearAllData{
@@ -193,14 +193,17 @@
 - (void)menuView:(WKMenuView *)menu didSelesctedIndex:(NSInteger)index{
     animate = NO;
     CGPoint targetP = CGPointMake(self.scrollView.frame.size.width*index, 0);
-    [self.scrollView setContentOffset:targetP animated:NO];
-
-}
-- (void)menuView:(WKMenuView *)menu didPressSearchButton:(UIButton *)searchButton{
-    if ([self.delegate respondsToSelector:@selector(pageView:didPressedSearchButton:)]) {
-        [self.delegate pageView:self didPressedSearchButton:searchButton];
+    [self.scrollView setContentOffset:targetP animated:YES];
+    
+    if ([self.delegate respondsToSelector:@selector(pageView:didChangedPageToIndex:)]) {
+        [self.delegate pageView:self didChangedPageToIndex:index];
     }
 }
+//- (void)menuView:(WKMenuView *)menu didPressSearchButton:(UIButton *)searchButton{
+//    if ([self.delegate respondsToSelector:@selector(pageView:didPressedSearchButton:)]) {
+//        [self.delegate pageView:self didPressedSearchButton:searchButton];
+//    }
+//}
 #pragma mark - ScrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [self layoutItems];
@@ -210,6 +213,19 @@
         
         CGFloat rate = contentOffsetX / width;
         [self.menuView slideMenuAtProgress:rate];
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    CGFloat width = self.scrollView.frame.size.width;
+    CGFloat contentOffsetX = self.scrollView.contentOffset.x;
+    NSInteger index = contentOffsetX / width;
+    if ([self.delegate respondsToSelector:@selector(pageView:didChangedPageToIndex:)]) {
+        [self.delegate pageView:self didChangedPageToIndex:index];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(pageView:didEndDeceleratingAtPage:andIndex:)]) {
+        WKPageCell *cell = self.displayCells[@(index)];
+        [self.delegate pageView:self didEndDeceleratingAtPage:cell andIndex:index];
     }
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{

@@ -63,13 +63,13 @@ typedef enum{
  *  @return menuView的高度
  */
 - (CGFloat)pageView:(WKPageView *)pageView heightForMenuView:(WKMenuView *)menuView;
-/**
- *  监听menuView的搜索按钮的点击事件
- *
- *  @param pageView     当前pageView
- *  @param searchButton 顶部菜单的search按钮
- */
-- (void)pageView:(WKPageView *)pageView didPressedSearchButton:(UIButton *)searchButton;
+///**
+// *  监听menuView的搜索按钮的点击事件
+// *
+// *  @param pageView     当前pageView
+// *  @param searchButton 顶部菜单的search按钮
+// */
+//- (void)pageView:(WKPageView *)pageView didPressedSearchButton:(UIButton *)searchButton;
 /**
  *  设置menuView的背景颜色,默认：[UIColor colorWithRed:172.0/255.0 green:165.0/255.0 blue:162.0/255.0 alpha:1.0]
  *  @param pageView 当前翻页视图
@@ -95,6 +95,20 @@ typedef enum{
  *  @return 标题字体大小
  */
 - (CGFloat)titleSizeOfMenuItemInPageView:(WKPageView *)pageView withState:(WKMenuItemTitleSizeState)state;
+/**
+ *  监听Page页数的改变，通知代理以实现一些功能
+ *
+ *  @param pageView 当前翻页视图
+ *  @param index    当前页面的序号
+ */
+- (void)pageView:(WKPageView *)pageView didChangedPageToIndex:(NSInteger)index;
+/**
+ *  监听Page滚动的结束，通知代理以实现一些功能
+ *
+ *  @param pageView 当前翻页视图
+ *  @param index    当前页面的序号
+ */
+- (void)pageView:(WKPageView *)pageView didEndDeceleratingAtPage:(WKPageCell *)pageCell andIndex:(NSInteger)index;
 @end
 
 @interface WKPageView : UIView

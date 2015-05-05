@@ -18,7 +18,14 @@
     
     if (self = [super initWithFrame:CGRectZero collectionViewLayout:flow]) {
         _identifier = identifier;
+        self.showsHorizontalScrollIndicator = NO;
+        self.showsVerticalScrollIndicator = NO;
+        self.bounces = YES;
     }
     return self;
 }
+- (void)layoutSubviews{
+    [super layoutSubviews];
+}
+
 @end
