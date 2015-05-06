@@ -13,12 +13,11 @@
 #import "WKRoleView.h"
 #import "WKRoleCell.h"
 #import "WKSignatureController.h"
+#import "NSString+filePath.h"
 #import "Common.h"
-#import "UIColor+Random.h"
 #define kCollectionCellIdentifier @"collectionCell"
 #define kRoleRate 2.33
 #define kNextRate 4.27
-#define kNextMargin 39
 #define kBlackColor [UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]
 #define kMenuColor  [UIColor colorWithRed:219.0/255.0 green:213.0/255.0 blue:209.0/255.0 alpha:1.0]
 @interface WKRolePickController () <WKPageViewDataSource,WKPageViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>
@@ -39,6 +38,8 @@
 //
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) NSArray *roles;
+
+@property (nonatomic, strong) WKRoleInfo *testInfo;
 @end
 
 @implementation WKRolePickController
@@ -61,6 +62,13 @@
         _items = @[@"最新",@"言情",@"武侠",@"明星",@"DotA",@"LOL",@"WOW",@"高富帅",@"白富美",@"屌丝",@"壮汉"];
     }
     return _items;
+}
+- (WKRoleInfo *)testInfo{
+    if (_testInfo == nil) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"Chopper" ofType:@"png"];
+        _testInfo = [[WKRoleInfo alloc] initWithName:@"乔巴" desc:@"我不是狸猫啦,你看,我有角!" imageURL:path];
+    }
+    return _testInfo;
 }
 - (WKRoleInfo *)roleInfo{
     if (_roleInfo == nil) {
@@ -101,10 +109,10 @@
         bottomH = 0;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(nextPressed:)];
     }else{
-        CGFloat y = height-65-64;
+        CGFloat y = height-kNextBMargin;
         CGFloat x = kNextMargin;
         CGFloat nextW = width - x*2;
-        CGFloat nextH = 40;
+        CGFloat nextH = kNextHeight;
         UIButton *nextButton = [[UIButton alloc] initWithFrame:CGRectMake(x, y, nextW, nextH)];
         [nextButton setBackgroundImage:[UIImage imageNamed:@"next_button_nor"] forState:UIControlStateNormal];
         [nextButton setBackgroundImage:[UIImage imageNamed:@"next_button_sel"] forState:UIControlStateHighlighted];
@@ -126,8 +134,15 @@
     [self.view addSubview:pageView];
     self.pageView = pageView;
 }
+// 下一步
 - (void)nextPressed:(id)sender{
-    NSLog(@"selectedPage: %ld - selectedIndexpath: %@",(long)self.selectedPage,self.selectedIndexPath);
+    // 归档
+    NSString *filePath = [NSString stringWithDocumentPath:kRoleFileName];
+    NSMutableData *data = [[NSMutableData alloc] init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+    [archiver encodeObject:self.roleView.roleInfo forKey:kRoleInfoKey];
+    [archiver finishEncoding];
+    [data writeToFile:filePath atomically:YES];
     
     WKSignatureController *sign = [[WKSignatureController alloc] init];
     [self.navigationController pushViewController:sign animated:YES];
@@ -150,7 +165,6 @@
         cell.dataSource = self;
         cell.backgroundColor = [UIColor colorWithRed:167.0/255.0 green:167.0/255.0 blue:167.0/255.0 alpha:1.0];
     }
-    NSLog(@"%ld\n%@",(long)self.selectedPage,self.selectedPathes);
     // 重置每个Page的Cell的选中状态 (由于cell的复用引起)
     if (self.selectedPage != index) {
         NSArray *indexPathes = self.selectedPathes.allValues;
@@ -198,7 +212,7 @@
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     WKRoleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCollectionCellIdentifier forIndexPath:indexPath];
-    cell.roleInfo = self.roleInfo;
+    cell.roleInfo = self.testInfo;
     return cell;
 }
 #pragma mark - Collection view delegate
@@ -207,5 +221,7 @@
     self.selectedPage = self.currentPage;
 
     [self.selectedPathes setObject:self.selectedIndexPath forKey:@(self.selectedPage)];
+    WKRoleCell *cell = (WKRoleCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    self.roleView.roleInfo = cell.roleInfo;
 }
 @end

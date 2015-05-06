@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface WKNavigationController : UINavigationController
-
+@property (nonatomic, assign) BOOL animate;
 @end

@@ -11,7 +11,10 @@
 #define kMargin 20
 #define kRate 11
 #define kIconRate 3.76
-@interface WKRoleView ()
+#define kAnimateDuration 0.3
+@interface WKRoleView (){
+    BOOL animate;
+}
 @property (nonatomic, weak) UIImageView *icon;
 @property (nonatomic, weak) UILabel *nameLabel;
 @property (nonatomic, weak) UILabel *descLabel;
@@ -24,6 +27,7 @@
     }
     return self;
 }
+// 初始化，添加视图等
 - (void)setUP{
     // 当前选择的角色
     CGFloat width = self.frame.size.width;
@@ -73,11 +77,29 @@
 }
 - (void)setRoleInfo:(WKRoleInfo *)roleInfo{
     _roleInfo = roleInfo;
-    
     UIImage *image = [UIImage imageWithContentsOfFile:roleInfo.imageURL];
     UIImage *icon = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
-    self.icon.image = icon;
-    self.nameLabel.text = roleInfo.name;
-    self.descLabel.text = roleInfo.desc;
+    
+//    if (animate) {
+//        [UIView animateWithDuration:0.1 animations:^{
+//            self.alpha = 0;
+//        } completion:^(BOOL finished) {
+//            self.icon.image = icon;
+//            self.nameLabel.text = roleInfo.name;
+//            self.descLabel.text = roleInfo.desc;
+//            [UIView animateWithDuration:0.5 animations:^{
+//                self.alpha = 1;
+//            }];
+//        }];
+//    }else{
+        self.icon.image = icon;
+        self.nameLabel.text = roleInfo.name;
+        self.descLabel.text = roleInfo.desc;
+//        animate = YES;
+//    }
+    
+//    self.icon.image = icon;
+//    self.nameLabel.text = roleInfo.name;
+//    self.descLabel.text = roleInfo.desc;
 }
 @end

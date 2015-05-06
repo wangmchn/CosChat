@@ -9,9 +9,17 @@
 #import "WKSignatureController.h"
 #import "WKMainViewController.h"
 #import "Common.h"
+#import "WKButtonData.h"
 #define WKMargin 2
+#define kAnimateInterval 0.3
 @interface WKSignatureController ()
-@property(nonatomic,strong)NSMutableArray *arrayOfButton;
+{
+    WKButtonData *_titleArray;
+}
+
+@property(nonatomic,strong) WKButtonData *data;
+@property(nonatomic,strong) NSMutableArray *arrayOfButton;
+@property(nonatomic,strong) NSMutableArray *arrayOfTitle;
 //@property(nonatomic,strong)NSMutableArray *arrayOfTag;
 @end
 
@@ -21,9 +29,43 @@
     [super viewDidLoad];
     self.title = @"个性标签";
     self.arrayOfButton = [NSMutableArray array];
+    [self getButtonData];
     [self setUI];
 }
-
+-(void)setData:(WKButtonData *)data
+{
+    _data=data;
+    _arrayOfTitle=data.buttonTitleArray;
+}
+/**
+ *  获取标签数据
+ */
+- (void)getButtonData
+{
+    NSMutableArray *array=[NSMutableArray arrayWithObjects:@"我的",@"好的",@"他的",@"你的",@"进来",@"发饿",@"啊今",@"飞啊服务",@"无法",@"不是",@"网盘",@"额头",@"请我",@"容易",@"知道",@"放弃",@"垃圾",@"安妮",@"我是",@"秋游",@"百度",@"手机",@"大家", nil];
+    NSMutableArray *tempArray=[NSMutableArray array];
+    tempArray=array;
+    NSUInteger k=self.arrayOfButton.count;
+    NSMutableArray *title=[NSMutableArray array];
+    for (int i=0; i<k; i++) {
+        [title addObject:((UIButton*)[self.view viewWithTag:1001+i]).titleLabel.text];
+    }
+    
+    for (int j=0;j<tempArray.count;j++) {
+        for (int i=0; i<k; i++) {
+            if ([tempArray[j] isEqualToString:title[i]]) {
+                [tempArray removeObject:tempArray[j]];
+            }
+        }
+    }
+    NSMutableArray *name=[NSMutableArray array];
+    for (int i=0; i<10; i++) {
+        int k=arc4random()%tempArray.count;
+        name[i]=tempArray[k];
+        [tempArray removeObject:tempArray[k]];
+    }
+    _titleArray = [[WKButtonData alloc] initWithButtonTitle:name];
+}
 -(void)setUI
 {
     /**
@@ -33,7 +75,7 @@
     /**
      *  已选择
      */
-    UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(16, 75, 125, 30)];
+    UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth*0.05, kScreenHeight*0.12, 125, 30)];
     label.text=@"已选择(至多3个)";
     label.font=[UIFont systemFontOfSize:15];
     label.textColor=[UIColor whiteColor];
@@ -42,23 +84,26 @@
      *  标签选择
      */
     int k=0;
-    for (int i=0; i<5; i++) {
+
+    self.data=_titleArray;
+    for (int i=0; i<5&&k<10; i++) {
         for (int j=0; j<2; j++) {
             UIView *tagBG=[[UIView alloc]init];
-            tagBG.frame=CGRectMake(j*(159+WKMargin), 150+i*(50+WKMargin), 159, 50);
+            tagBG.frame=CGRectMake(j*(kScreenWidth/2-1+WKMargin), kScreenHeight*0.264+i*(kScreenHeight*0.09+WKMargin), kScreenWidth/2, kScreenHeight*0.09);
             tagBG.backgroundColor=[UIColor colorWithRed:0.919 green:1.000 blue:0.960 alpha:0.7];
-            
+            /**
+             *  按钮button:tag从2000到2009
+             */
             UIButton *button=[UIButton buttonWithType:UIButtonTypeCustom];
             button.tag=k+2000;
-            k++;
-            button.frame=CGRectMake(39, 12, 75, 28);
+
+            button.frame=CGRectMake(tagBG.frame.size.width*0.25, tagBG.frame.size.height*0.24, tagBG.frame.size.width*0.47, tagBG.frame.size.height*0.58);
             [button setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
             button.selected=NO;
-            NSString *str=[NSString stringWithFormat:@"%d",k];
-            
-            [button setTitle:str forState:UIControlStateNormal];
+            [button setTitle:_titleArray.buttonTitleArray[k] forState:UIControlStateNormal];
             button.titleLabel.font=[UIFont systemFontOfSize:14];
             [button addTarget:self action:@selector(selectTag:) forControlEvents:UIControlEventTouchUpInside];
+                        k++;
             [tagBG addSubview:button];
             [self.view addSubview:tagBG];
         }
@@ -67,18 +112,19 @@
      *  换一批button
      */
     UIButton *change=[UIButton buttonWithType:UIButtonTypeCustom];
-    change.frame=CGRectMake(200, 430, 100, 30);
+    change.frame=CGRectMake(kScreenWidth*0.66, kScreenHeight*0.74, 100, 30);
     change.backgroundColor=[UIColor clearColor];
     [change setTitle:@"换一批" forState:UIControlStateNormal];
     [change setTitleColor:kNormalColor forState:UIControlStateNormal];
     [change setTitleColor:kSelectedColor forState:UIControlStateHighlighted];
+    [change addTarget:self action:@selector(changeButtons:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:change];
     /**
      *  确定按钮
      */
     UIButton *determin=[UIButton buttonWithType:UIButtonTypeCustom];
  
-    determin.frame=CGRectMake(35, 495, 250, 35);
+    determin.frame=CGRectMake(kScreenWidth*0.1, kScreenHeight*0.87, kScreenWidth*0.8, kScreenHeight*0.07);
     [determin setBackgroundImage:[UIImage imageNamed:@"next_button_nor"] forState:UIControlStateNormal];
     [determin setBackgroundImage:[UIImage imageNamed:@"next_button_sel"] forState:UIControlStateHighlighted];
     [determin setTitle:@"我就是这样" forState:UIControlStateNormal];
@@ -88,8 +134,30 @@
     [self.view addSubview:determin];
 }
 - (void)determin{
+    NSMutableArray *title=[NSMutableArray array];
+    for (int i=0; i<self.arrayOfButton.count; i++) {
+        [title addObject:((UIButton*)[self.view viewWithTag:1001+i]).titleLabel.text];
+    }
     WKMainViewController *main = [[WKMainViewController alloc] init];
+    main.tagArray=_arrayOfButton;
     [self.navigationController pushViewController:main animated:YES];
+}
+/**
+ *  换一批按钮
+ *
+ *  @param button 获取新名字
+ */
+-(void)changeButtons:(UIButton *)button
+{
+    [self getButtonData];
+    for (int i=0; i<10; i++) {
+        [ (UIButton*)[self.view viewWithTag:2000+i] setTitle:_titleArray.buttonTitleArray[i] forState:UIControlStateNormal];
+        if (((UIButton*)[self.view viewWithTag:2000+i]).selected==YES) {
+            [(UIButton*)[self.view viewWithTag:2000+i] setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
+            ((UIButton*)[self.view viewWithTag:2000+i]).selected=NO;
+        }
+    }
+    
 }
 /**
  *  选中后的button
@@ -102,8 +170,22 @@
         button.selected=YES;
         [button setBackgroundImage:[UIImage imageNamed:@"tag_sel"] forState:UIControlStateNormal];
         UIButton *tag=[UIButton buttonWithType:UIButtonTypeCustom];
+        /**
+         *  标签的tag:从1001～1001+self.arrayOfButton.count
+         */
         tag.tag=1001+count;
-        tag.frame=CGRectMake(20+count*105, 105, 75, 28);
+        UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
+        CGRect rect=[button convertRect: button.bounds toView:window];
+        tag.frame=rect;
+        
+        
+        
+        [UIView transitionWithView:tag duration:kAnimateInterval options:0 animations:^{
+            tag.frame=CGRectMake(kScreenWidth*0.06+count*kScreenWidth*0.323, kScreenHeight*0.17, kScreenWidth*0.234, kScreenHeight*0.05);
+        } completion:^(BOOL finished) {
+            NSLog(@"动画结束");
+        }];
+//        tag.frame=CGRectMake(kScreenWidth*0.06+count*kScreenWidth*0.323, kScreenHeight*0.17, kScreenWidth*0.234, kScreenHeight*0.05);
         [tag setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
         NSString *title=button.titleLabel.text;
         [tag setTitle:title forState:UIControlStateNormal];
@@ -123,6 +205,7 @@
         [alert show];
         
     }
+
 }
 /**
  *  删除button
@@ -138,23 +221,39 @@
     }
     NSInteger mark=button.tag;
     [self.arrayOfButton removeObject:button];
-    [button removeFromSuperview];
+    [UIView transitionWithView:button duration:kAnimateInterval options:0 animations:^{
+        button.center=CGPointMake(button.frame.origin.x-320, 0);
+    } completion:^(BOOL finished) {
+        NSLog(@"动画结束");
+            [button removeFromSuperview];
+    }];
+
+
     if (mark==1001) {
         for (UIButton *btn in self.arrayOfButton) {
             CGFloat x=btn.frame.origin.x;
-            btn.frame=CGRectMake(x-105, 105, 75, 28);
-            btn.tag=btn.tag-1;
+            [UIView transitionWithView:button duration:kAnimateInterval options:0 animations:^{
+                btn.frame=CGRectMake(x-kScreenWidth*0.323, kScreenHeight*0.17, kScreenWidth*0.234, kScreenHeight*0.05);
+                btn.tag=btn.tag-1;
+            } completion:^(BOOL finished) {
+                NSLog(@"动画结束");
+            }];
+
         }
     }else
     {
         for (UIButton *btn in self.arrayOfButton) {
             if (btn.tag-1000>2) {
                 CGFloat x=btn.frame.origin.x;
-                btn.frame=CGRectMake(x-105, 105, 75, 28);
-                btn.tag=btn.tag-1;
+                [UIView transitionWithView:button duration:kAnimateInterval options:0 animations:^{
+                    btn.frame=CGRectMake(x-kScreenWidth*0.323, kScreenHeight*0.17, kScreenWidth*0.234, kScreenHeight*0.05);
+                    btn.tag=btn.tag-1;
+                } completion:^(BOOL finished) {
+                    NSLog(@"动画结束");
+                }];
+
             }
         }
     }
-
 }
 @end
