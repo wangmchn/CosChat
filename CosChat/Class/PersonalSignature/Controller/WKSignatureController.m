@@ -8,6 +8,7 @@
 
 #import "WKSignatureController.h"
 #import "WKMainViewController.h"
+#import "NSString+filePath.h"
 #import "Common.h"
 #import "WKButtonData.h"
 #define WKMargin 2
@@ -43,8 +44,7 @@
 - (void)getButtonData
 {
     NSMutableArray *array=[NSMutableArray arrayWithObjects:@"我的",@"好的",@"他的",@"你的",@"进来",@"发饿",@"啊今",@"飞啊服务",@"无法",@"不是",@"网盘",@"额头",@"请我",@"容易",@"知道",@"放弃",@"垃圾",@"安妮",@"我是",@"秋游",@"百度",@"手机",@"大家", nil];
-    NSMutableArray *tempArray=[NSMutableArray array];
-    tempArray=array;
+    NSMutableArray *tempArray=[NSMutableArray arrayWithArray:array];
     NSUInteger k=self.arrayOfButton.count;
     NSMutableArray *title=[NSMutableArray array];
     for (int i=0; i<k; i++) {
@@ -103,7 +103,7 @@
             [button setTitle:_titleArray.buttonTitleArray[k] forState:UIControlStateNormal];
             button.titleLabel.font=[UIFont systemFontOfSize:14];
             [button addTarget:self action:@selector(selectTag:) forControlEvents:UIControlEventTouchUpInside];
-                        k++;
+            k++;
             [tagBG addSubview:button];
             [self.view addSubview:tagBG];
         }
@@ -123,23 +123,27 @@
      *  确定按钮
      */
     UIButton *determin=[UIButton buttonWithType:UIButtonTypeCustom];
- 
-    determin.frame=CGRectMake(kScreenWidth*0.1, kScreenHeight*0.87, kScreenWidth*0.8, kScreenHeight*0.07);
+    CGFloat nextX = kNextMargin;
+    CGFloat nextW = kScreenWidth - 2*nextX;
+    CGFloat nextH = kNextHeight;
+    CGFloat nextY = kScreenHeight - nextH - kNextBMargin;
+    determin.frame = CGRectMake(nextX, nextY, nextW, nextH);
     [determin setBackgroundImage:[UIImage imageNamed:@"next_button_nor"] forState:UIControlStateNormal];
     [determin setBackgroundImage:[UIImage imageNamed:@"next_button_sel"] forState:UIControlStateHighlighted];
     [determin setTitle:@"我就是这样" forState:UIControlStateNormal];
-    determin.titleLabel.font=[UIFont systemFontOfSize:18];
     
     [determin addTarget:self action:@selector(determin) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:determin];
 }
 - (void)determin{
-    NSMutableArray *title=[NSMutableArray array];
-    for (int i=0; i<self.arrayOfButton.count; i++) {
+    NSMutableArray *title = [NSMutableArray array];
+    for (int i = 0; i<self.arrayOfButton.count; i++) {
         [title addObject:((UIButton*)[self.view viewWithTag:1001+i]).titleLabel.text];
     }
+    NSString *filePath = [NSString documentPathWithFileName:kTagFileName];
+    [title writeToFile:filePath atomically:YES];
+    
     WKMainViewController *main = [[WKMainViewController alloc] init];
-    main.tagArray=_arrayOfButton;
     [self.navigationController pushViewController:main animated:YES];
 }
 /**
@@ -185,7 +189,6 @@
         } completion:^(BOOL finished) {
             NSLog(@"动画结束");
         }];
-//        tag.frame=CGRectMake(kScreenWidth*0.06+count*kScreenWidth*0.323, kScreenHeight*0.17, kScreenWidth*0.234, kScreenHeight*0.05);
         [tag setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
         NSString *title=button.titleLabel.text;
         [tag setTitle:title forState:UIControlStateNormal];

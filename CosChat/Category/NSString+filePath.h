@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (filePath)
-+ (NSString *)stringWithDocumentPath:(NSString *)fileName;
-+ (NSString *)stringWithCachePath:(NSString *)fileName;
++ (NSString *)documentPathWithFileName:(NSString *)fileName;
++ (NSString *)cachePathWithFileName:(NSString *)fileName;
 @end

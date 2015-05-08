@@ -77,6 +77,7 @@
     }
     return _roleInfo;
 }
+#pragma mark - Private methods
 - (void)viewDidLoad {
     [super viewDidLoad];
     // pre set
@@ -96,7 +97,6 @@
     CGFloat width   = self.view.frame.size.width;
     CGFloat height  = self.view.frame.size.height;
     CGFloat bottomH = width/kNextRate;
-    
     // roleView
     CGFloat roleH = width/kRoleRate;
     CGRect roleFrame = CGRectMake(0, 0, width, roleH);
@@ -109,11 +109,12 @@
         bottomH = 0;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(nextPressed:)];
     }else{
-        CGFloat y = height-kNextBMargin;
-        CGFloat x = kNextMargin;
-        CGFloat nextW = width - x*2;
+        CGFloat nextX = kNextMargin;
+        CGFloat nextW = width - 2*nextX;
         CGFloat nextH = kNextHeight;
-        UIButton *nextButton = [[UIButton alloc] initWithFrame:CGRectMake(x, y, nextW, nextH)];
+        CGFloat nextY = kNextButtonY - 64;
+        UIButton *nextButton = [[UIButton alloc] initWithFrame:CGRectMake(nextX, nextY, nextW, nextH)];
+        NSLog(@"%@",NSStringFromCGRect(nextButton.frame));
         [nextButton setBackgroundImage:[UIImage imageNamed:@"next_button_nor"] forState:UIControlStateNormal];
         [nextButton setBackgroundImage:[UIImage imageNamed:@"next_button_sel"] forState:UIControlStateHighlighted];
         [nextButton addTarget:self action:@selector(nextPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -137,7 +138,7 @@
 // 下一步
 - (void)nextPressed:(id)sender{
     // 归档
-    NSString *filePath = [NSString stringWithDocumentPath:kRoleFileName];
+    NSString *filePath = [NSString documentPathWithFileName:kRoleFileName];
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
     [archiver encodeObject:self.roleView.roleInfo forKey:kRoleInfoKey];

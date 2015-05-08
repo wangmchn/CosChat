@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface WKMainViewController : UIViewController
-@property(nonatomic,strong)NSMutableArray  *tagArray;
+
 @end

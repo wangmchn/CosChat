@@ -19,10 +19,12 @@
 #define kScreenWidth ([UIScreen mainScreen].bounds.size.width)
 #define kScreenHeight ([UIScreen mainScreen].bounds.size.height)
 // Next Button size
-#define kNextMargin 39
-#define kNextHeight 40
-#define kNextBMargin 129
+#define kNextMargin  32
+#define kNextHeight  39
+#define kNextBMargin 20
+#define kNextButtonY (kScreenHeight-kScreenHeight/568*59)
 
 #define kRoleInfoKey @"roleInfo"
 #define kRoleFileName @"roleInfo.archiver"
+#define kTagFileName @"tag.plist"
 #endif
