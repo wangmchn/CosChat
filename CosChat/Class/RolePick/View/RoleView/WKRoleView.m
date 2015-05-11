@@ -8,6 +8,7 @@
 
 #import "WKRoleView.h"
 #import "UIImage+Circle.h"
+#import "NSString+filePath.h"
 #define kMargin 20
 #define kRate 11
 #define kIconRate 3.76
@@ -15,9 +16,6 @@
 @interface WKRoleView (){
     BOOL animate;
 }
-@property (nonatomic, weak) UIImageView *icon;
-@property (nonatomic, weak) UILabel *nameLabel;
-@property (nonatomic, weak) UILabel *descLabel;
 @end
 
 @implementation WKRoleView
@@ -77,29 +75,28 @@
 }
 - (void)setRoleInfo:(WKRoleInfo *)roleInfo{
     _roleInfo = roleInfo;
-    UIImage *image = [UIImage imageWithContentsOfFile:roleInfo.imageURL];
-    UIImage *icon = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
-    
-//    if (animate) {
-//        [UIView animateWithDuration:0.1 animations:^{
-//            self.alpha = 0;
-//        } completion:^(BOOL finished) {
-//            self.icon.image = icon;
-//            self.nameLabel.text = roleInfo.name;
-//            self.descLabel.text = roleInfo.desc;
-//            [UIView animateWithDuration:0.5 animations:^{
-//                self.alpha = 1;
-//            }];
-//        }];
-//    }else{
-        self.icon.image = icon;
-        self.nameLabel.text = roleInfo.name;
-        self.descLabel.text = roleInfo.desc;
-//        animate = YES;
-//    }
-    
-//    self.icon.image = icon;
-//    self.nameLabel.text = roleInfo.name;
-//    self.descLabel.text = roleInfo.desc;
+    NSString *directoryPath = [NSString cachePathWithFileName:@"Icons"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    UIImage *icon;
+    // 创建文件夹
+    if (![fileManager fileExistsAtPath:directoryPath]) {
+        [fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    // 看图片是否有缓存
+    NSString *filePath = [directoryPath stringByAppendingPathComponent:[roleInfo.imageURL lastPathComponent]];
+    if (![fileManager fileExistsAtPath:filePath]) {
+        // 没有缓存
+        UIImage *image = [UIImage imageWithContentsOfFile:roleInfo.imageURL];
+        icon = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
+        roleInfo.imageURL = filePath;
+        NSData *data = UIImagePNGRepresentation(icon);
+        [data writeToFile:filePath atomically:YES];
+    }else{
+        // 有缓存
+        icon = [UIImage imageWithContentsOfFile:filePath];
+    }
+    self.icon.image = icon;
+    self.nameLabel.text = roleInfo.name;
+    self.descLabel.text = roleInfo.desc;
 }
 @end

@@ -12,7 +12,7 @@
 + (UIImage *)circleImageWithImage:(UIImage *)image borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor{
     // 1.加载原图
     UIImage *oldImage = image;
-    
+
     // 2.开启上下文
     CGFloat imageW = oldImage.size.width + 2 * borderWidth;
     CGFloat imageH = oldImage.size.height + 2 * borderWidth;

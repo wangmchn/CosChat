@@ -10,4 +10,7 @@
 #import "WKRoleInfo.h"
 @interface WKRoleView : UIView
 @property (nonatomic, strong) WKRoleInfo *roleInfo;
+@property (nonatomic, weak) UIImageView *icon;
+@property (nonatomic, weak) UILabel *nameLabel;
+@property (nonatomic, weak) UILabel *descLabel;
 @end

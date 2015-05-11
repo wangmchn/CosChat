@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#define kBorderColor [UIColor colorWithRed:200.0/255.0f green:200.0/255.0f blue:200.0/255.0f alpha:1.0f]
-#define kBorderWidth 7
+
 
 @interface WKRoleInfo : NSObject <NSCoding, NSCopying>
 @property (nonatomic, copy) NSString *name;

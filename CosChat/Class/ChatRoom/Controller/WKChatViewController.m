@@ -82,7 +82,6 @@
     self.IFView.frame = newFrame;
     
     [UIView commitAnimations];
-    
 }
 
 #pragma mark - View

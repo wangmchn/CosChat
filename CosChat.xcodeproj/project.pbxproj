@@ -28,7 +28,6 @@
 		4D06BC031AFA552B002077D9 /* RTSpinKitUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D06BBF11AFA552B002077D9 /* RTSpinKitUtils.m */; };
 		4D06BC041AFA552B002077D9 /* RTSpinKitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D06BBF31AFA552B002077D9 /* RTSpinKitView.m */; };
 		4D1019AE1AF0F45A0033FDE6 /* WKWelcomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1019AD1AF0F45A0033FDE6 /* WKWelcomeController.m */; };
-		4D1019B31AF0F7D20033FDE6 /* WKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1019B21AF0F7D20033FDE6 /* WKNavigationController.m */; };
 		4D1019C11AF101060033FDE6 /* WKRoleIntroduceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1019BE1AF101060033FDE6 /* WKRoleIntroduceViewController.m */; };
 		4D21E54B1AF8E26C00189285 /* WKMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D21E54A1AF8E26C00189285 /* WKMainViewController.m */; };
 		4D6B657C1AF72A7E00B71CE7 /* Chopper.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6B657B1AF72A7E00B71CE7 /* Chopper.png */; };
@@ -38,14 +37,19 @@
 		4D6EB1571AF64B1200CD7360 /* WKRoleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D6EB1561AF64B1200CD7360 /* WKRoleView.m */; };
 		4D6EB1591AF6543100CD7360 /* superman.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D6EB1581AF6543100CD7360 /* superman.png */; };
 		4D6EF6DF1AFC8265004E6822 /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D6EF6DE1AFC8265004E6822 /* ChatModel.m */; };
+		4D6EF6EA1AFD32A8004E6822 /* WKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D6EF6E91AFD32A8004E6822 /* WKNavigationController.m */; };
 		4D781D041AF0BF370049D0F5 /* WKRolePickController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D031AF0BF370049D0F5 /* WKRolePickController.m */; };
 		4D781D1B1AF0D3DC0049D0F5 /* WKMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D141AF0D3DC0049D0F5 /* WKMenuItem.m */; };
 		4D781D1C1AF0D3DC0049D0F5 /* WKMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D161AF0D3DC0049D0F5 /* WKMenuView.m */; };
 		4D781D1D1AF0D3DC0049D0F5 /* WKPageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D181AF0D3DC0049D0F5 /* WKPageCell.m */; };
 		4D781D1E1AF0D3DC0049D0F5 /* WKPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D1A1AF0D3DC0049D0F5 /* WKPageView.m */; };
 		4D781D221AF0D46C0049D0F5 /* UIColor+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D781D211AF0D46C0049D0F5 /* UIColor+Random.m */; };
+		4D8671471AFE029100F3F41A /* WKMatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D8671461AFE029100F3F41A /* WKMatchView.m */; };
+		4D86714B1AFE051F00F3F41A /* WKMatchContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D86714A1AFE051F00F3F41A /* WKMatchContent.m */; };
 		4DA4E2AA1AF796B300205B7B /* WKSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DA4E2A91AF796B300205B7B /* WKSettingViewController.m */; };
 		4DA4E2AD1AF7971600205B7B /* WKSettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DA4E2AC1AF7971600205B7B /* WKSettingItem.m */; };
+		4DAA20711B0089C200F7D895 /* IMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAA20701B0089C200F7D895 /* IMStore.m */; };
+		4DAA20741B00911400F7D895 /* WKImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAA20731B00911400F7D895 /* WKImageCache.m */; };
 		4DB26AA61AFA847F00428EFF /* WKTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB26AA51AFA847F00428EFF /* WKTagView.m */; };
 		4DED79A61AFB54FB0022B349 /* WKChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DED79A51AFB54FB0022B349 /* WKChatViewController.m */; };
 		4DED79E81AFB58B50022B349 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DED79DD1AFB58B50022B349 /* libmp3lame.a */; };
@@ -142,13 +146,10 @@
 		4D06BBF31AFA552B002077D9 /* RTSpinKitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSpinKitView.m; sourceTree = "<group>"; };
 		4D1019AC1AF0F45A0033FDE6 /* WKWelcomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WKWelcomeController.h; path = Controller/WKWelcomeController.h; sourceTree = "<group>"; };
 		4D1019AD1AF0F45A0033FDE6 /* WKWelcomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WKWelcomeController.m; path = Controller/WKWelcomeController.m; sourceTree = "<group>"; };
-		4D1019B11AF0F7D20033FDE6 /* WKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKNavigationController.h; sourceTree = "<group>"; };
-		4D1019B21AF0F7D20033FDE6 /* WKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKNavigationController.m; sourceTree = "<group>"; };
 		4D1019BD1AF101060033FDE6 /* WKRoleIntroduceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKRoleIntroduceViewController.h; sourceTree = "<group>"; };
 		4D1019BE1AF101060033FDE6 /* WKRoleIntroduceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKRoleIntroduceViewController.m; sourceTree = "<group>"; };
 		4D21E5491AF8E26C00189285 /* WKMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKMainViewController.h; sourceTree = "<group>"; };
 		4D21E54A1AF8E26C00189285 /* WKMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKMainViewController.m; sourceTree = "<group>"; };
-		4D21E54C1AF8E29800189285 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		4D6B657B1AF72A7E00B71CE7 /* Chopper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chopper.png; sourceTree = "<group>"; };
 		4D6B65831AF72B0E00B71CE7 /* WKRoleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKRoleCell.h; sourceTree = "<group>"; };
 		4D6B65841AF72B0E00B71CE7 /* WKRoleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKRoleCell.m; sourceTree = "<group>"; };
@@ -161,6 +162,9 @@
 		4D6EB1581AF6543100CD7360 /* superman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = superman.png; sourceTree = "<group>"; };
 		4D6EF6DD1AFC8265004E6822 /* ChatModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatModel.h; sourceTree = "<group>"; };
 		4D6EF6DE1AFC8265004E6822 /* ChatModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
+		4D6EF6E81AFD32A8004E6822 /* WKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKNavigationController.h; sourceTree = "<group>"; };
+		4D6EF6E91AFD32A8004E6822 /* WKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKNavigationController.m; sourceTree = "<group>"; };
+		4D6EF6EB1AFD32C5004E6822 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = Class/Main/Common.h; sourceTree = "<group>"; };
 		4D781D021AF0BF370049D0F5 /* WKRolePickController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKRolePickController.h; sourceTree = "<group>"; };
 		4D781D031AF0BF370049D0F5 /* WKRolePickController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKRolePickController.m; sourceTree = "<group>"; };
 		4D781D131AF0D3DC0049D0F5 /* WKMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKMenuItem.h; sourceTree = "<group>"; };
@@ -173,10 +177,18 @@
 		4D781D1A1AF0D3DC0049D0F5 /* WKPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKPageView.m; sourceTree = "<group>"; };
 		4D781D201AF0D46C0049D0F5 /* UIColor+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Random.h"; sourceTree = "<group>"; };
 		4D781D211AF0D46C0049D0F5 /* UIColor+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Random.m"; sourceTree = "<group>"; };
+		4D8671451AFE029100F3F41A /* WKMatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKMatchView.h; sourceTree = "<group>"; };
+		4D8671461AFE029100F3F41A /* WKMatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKMatchView.m; sourceTree = "<group>"; };
+		4D8671491AFE051F00F3F41A /* WKMatchContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKMatchContent.h; sourceTree = "<group>"; };
+		4D86714A1AFE051F00F3F41A /* WKMatchContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKMatchContent.m; sourceTree = "<group>"; };
 		4DA4E2A81AF796B300205B7B /* WKSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKSettingViewController.h; sourceTree = "<group>"; };
 		4DA4E2A91AF796B300205B7B /* WKSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKSettingViewController.m; sourceTree = "<group>"; };
 		4DA4E2AB1AF7971600205B7B /* WKSettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKSettingItem.h; sourceTree = "<group>"; };
 		4DA4E2AC1AF7971600205B7B /* WKSettingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKSettingItem.m; sourceTree = "<group>"; };
+		4DAA206F1B0089C200F7D895 /* IMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMStore.h; sourceTree = "<group>"; };
+		4DAA20701B0089C200F7D895 /* IMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMStore.m; sourceTree = "<group>"; };
+		4DAA20721B00911400F7D895 /* WKImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKImageCache.h; sourceTree = "<group>"; };
+		4DAA20731B00911400F7D895 /* WKImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKImageCache.m; sourceTree = "<group>"; };
 		4DB26AA41AFA847F00428EFF /* WKTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKTagView.h; sourceTree = "<group>"; };
 		4DB26AA51AFA847F00428EFF /* WKTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKTagView.m; sourceTree = "<group>"; };
 		4DED79A41AFB54FB0022B349 /* WKChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKChatViewController.h; sourceTree = "<group>"; };
@@ -336,6 +348,8 @@
 		4D1019AF1AF0F7A60033FDE6 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				4D8671481AFE04D300F3F41A /* Model */,
+				4D8671411AFE00CE00F3F41A /* View */,
 				4D1019B01AF0F7A60033FDE6 /* Controller */,
 			);
 			path = Main;
@@ -346,8 +360,8 @@
 			children = (
 				4D21E5491AF8E26C00189285 /* WKMainViewController.h */,
 				4D21E54A1AF8E26C00189285 /* WKMainViewController.m */,
-				4D1019B11AF0F7D20033FDE6 /* WKNavigationController.h */,
-				4D1019B21AF0F7D20033FDE6 /* WKNavigationController.m */,
+				4D6EF6E81AFD32A8004E6822 /* WKNavigationController.h */,
+				4D6EF6E91AFD32A8004E6822 /* WKNavigationController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -521,6 +535,53 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
+		4D8671411AFE00CE00F3F41A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4D8671451AFE029100F3F41A /* WKMatchView.h */,
+				4D8671461AFE029100F3F41A /* WKMatchView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4D8671421AFE00E200F3F41A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				4DF41F631AE6A764008D0BFA /* Images.xcassets */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		4D8671431AFE00F000F3F41A /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				4D6EF6EB1AFD32C5004E6822 /* Common.h */,
+				4DF41F5A1AE6A764008D0BFA /* AppDelegate.h */,
+				4DF41F5B1AE6A764008D0BFA /* AppDelegate.m */,
+				4DF41F581AE6A764008D0BFA /* main.m */,
+				4DF41F571AE6A764008D0BFA /* Info.plist */,
+			);
+			name = Files;
+			sourceTree = "<group>";
+		};
+		4D8671441AFE011300F3F41A /* Xib&Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				4DF41F601AE6A764008D0BFA /* Main.storyboard */,
+				4DF41F651AE6A764008D0BFA /* LaunchScreen.xib */,
+			);
+			name = "Xib&Storyboard";
+			sourceTree = "<group>";
+		};
+		4D8671481AFE04D300F3F41A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4D8671491AFE051F00F3F41A /* WKMatchContent.h */,
+				4D86714A1AFE051F00F3F41A /* WKMatchContent.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		4DA4E29D1AF78E4500205B7B /* PersonalSignature */ = {
 			isa = PBXGroup;
 			children = (
@@ -556,6 +617,17 @@
 				4DA4E2A91AF796B300205B7B /* WKSettingViewController.m */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		4DD7B93D1AFFB0BE006FDCCD /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				4DAA206F1B0089C200F7D895 /* IMStore.h */,
+				4DAA20701B0089C200F7D895 /* IMStore.m */,
+				4DAA20721B00911400F7D895 /* WKImageCache.h */,
+				4DAA20731B00911400F7D895 /* WKImageCache.m */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		4DED79A01AFB54CB0022B349 /* ChatRoom */ = {
@@ -674,6 +746,7 @@
 		4DF41F551AE6A764008D0BFA /* CosChat */ = {
 			isa = PBXGroup;
 			children = (
+				4DD7B93D1AFFB0BE006FDCCD /* Tools */,
 				4D06BBCE1AFA552B002077D9 /* Util */,
 				4D781D1F1AF0D4640049D0F5 /* Category */,
 				4D781CFA1AF0BEE70049D0F5 /* Class */,
@@ -687,14 +760,9 @@
 			children = (
 				4D6EB1581AF6543100CD7360 /* superman.png */,
 				4D6B657B1AF72A7E00B71CE7 /* Chopper.png */,
-				4DF41F631AE6A764008D0BFA /* Images.xcassets */,
-				4DF41F5A1AE6A764008D0BFA /* AppDelegate.h */,
-				4DF41F5B1AE6A764008D0BFA /* AppDelegate.m */,
-				4DF41F601AE6A764008D0BFA /* Main.storyboard */,
-				4DF41F651AE6A764008D0BFA /* LaunchScreen.xib */,
-				4DF41F571AE6A764008D0BFA /* Info.plist */,
-				4DF41F581AE6A764008D0BFA /* main.m */,
-				4D21E54C1AF8E29800189285 /* Common.h */,
+				4D8671441AFE011300F3F41A /* Xib&Storyboard */,
+				4D8671431AFE00F000F3F41A /* Files */,
+				4D8671421AFE00E200F3F41A /* Images */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -898,8 +966,10 @@
 				4D06BBF71AFA552B002077D9 /* RTSpinKitBounceAnimation.m in Sources */,
 				4D06BBFB1AFA552B002077D9 /* RTSpinKitFadingCircleAltAnimation.m in Sources */,
 				4D06BBFF1AFA552B002077D9 /* RTSpinKitThreeBounceAnimation.m in Sources */,
+				4D6EF6EA1AFD32A8004E6822 /* WKNavigationController.m in Sources */,
 				4DED7B4F1AFB7D460022B349 /* UUInputFunctionView.m in Sources */,
 				4D781D1D1AF0D3DC0049D0F5 /* WKPageCell.m in Sources */,
+				4DAA20711B0089C200F7D895 /* IMStore.m in Sources */,
 				4D781D041AF0BF370049D0F5 /* WKRolePickController.m in Sources */,
 				4D06BBF41AFA552B002077D9 /* RTSpinKit9CubeGridAnimation.m in Sources */,
 				4D06BBFC1AFA552B002077D9 /* RTSpinKitFadingCircleAnimation.m in Sources */,
@@ -915,18 +985,20 @@
 				4D06BC031AFA552B002077D9 /* RTSpinKitUtils.m in Sources */,
 				4D06BC001AFA552B002077D9 /* RTSpinKitWanderingCubesAnimation.m in Sources */,
 				4D06BBCA1AFA4DD6002077D9 /* WKButtonData.m in Sources */,
+				4D86714B1AFE051F00F3F41A /* WKMatchContent.m in Sources */,
 				4D781D1C1AF0D3DC0049D0F5 /* WKMenuView.m in Sources */,
 				4D781D1E1AF0D3DC0049D0F5 /* WKPageView.m in Sources */,
 				4D06BBF91AFA552B002077D9 /* RTSpinKitCircleAnimation.m in Sources */,
+				4DAA20741B00911400F7D895 /* WKImageCache.m in Sources */,
 				4D06BC011AFA552B002077D9 /* RTSpinKitWaveAnimation.m in Sources */,
 				4DA4E2AD1AF7971600205B7B /* WKSettingItem.m in Sources */,
 				4DB26AA61AFA847F00428EFF /* WKTagView.m in Sources */,
 				4D06BBC41AF9E010002077D9 /* NSString+filePath.m in Sources */,
+				4D8671471AFE029100F3F41A /* WKMatchView.m in Sources */,
 				4DED7B4D1AFB7D460022B349 /* UUAVAudioPlayer.m in Sources */,
 				4DF41F591AE6A764008D0BFA /* main.m in Sources */,
 				4D6EB1531AF64AD300CD7360 /* WKRoleInfo.m in Sources */,
 				4D6EB1571AF64B1200CD7360 /* WKRoleView.m in Sources */,
-				4D1019B31AF0F7D20033FDE6 /* WKNavigationController.m in Sources */,
 				4DED7B531AFB7D460022B349 /* UUMessageFrame.m in Sources */,
 				4D21E54B1AF8E26C00189285 /* WKMainViewController.m in Sources */,
 				4D06BBF81AFA552B002077D9 /* RTSpinKitChasingDotsAnimation.m in Sources */,
@@ -1059,7 +1131,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CosChat/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1077,7 +1149,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CosChat/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

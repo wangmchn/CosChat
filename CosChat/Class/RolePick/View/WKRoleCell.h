@@ -10,4 +10,5 @@
 #import "WKRoleInfo.h"
 @interface WKRoleCell : UICollectionViewCell
 @property (nonatomic, strong) WKRoleInfo *roleInfo;
+@property (nonatomic, weak) UIImageView *icon;
 @end

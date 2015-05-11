@@ -107,7 +107,7 @@
     // next step
     if (iPhone4) {
         bottomH = 0;
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStyleDone target:self action:@selector(nextPressed:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"变身" style:UIBarButtonItemStyleDone target:self action:@selector(nextPressed:)];
     }else{
         CGFloat nextX = kNextMargin;
         CGFloat nextW = width - 2*nextX;
@@ -118,7 +118,7 @@
         [nextButton setBackgroundImage:[UIImage imageNamed:@"next_button_nor"] forState:UIControlStateNormal];
         [nextButton setBackgroundImage:[UIImage imageNamed:@"next_button_sel"] forState:UIControlStateHighlighted];
         [nextButton addTarget:self action:@selector(nextPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [nextButton setTitle:@"下一步" forState:UIControlStateNormal];
+        [nextButton setTitle:@"变身" forState:UIControlStateNormal];
         [self.view addSubview:nextButton];
     }
     // pageView
@@ -135,15 +135,17 @@
     [self.view addSubview:pageView];
     self.pageView = pageView;
 }
-// 下一步
+// 变身
 - (void)nextPressed:(id)sender{
     // 归档
     NSString *filePath = [NSString documentPathWithFileName:kRoleFileName];
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+    NSLog(@"%@",self.roleView.roleInfo.imageURL);
     [archiver encodeObject:self.roleView.roleInfo forKey:kRoleInfoKey];
     [archiver finishEncoding];
     [data writeToFile:filePath atomically:YES];
+    
     
     WKSignatureController *sign = [[WKSignatureController alloc] init];
     [self.navigationController pushViewController:sign animated:YES];

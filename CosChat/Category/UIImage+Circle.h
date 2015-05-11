@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#define kBorderColor [UIColor colorWithRed:200.0/255.0f green:200.0/255.0f blue:200.0/255.0f alpha:1.0f]
+#define kBorderWidth 7
 @interface UIImage (Circle)
 + (UIImage *)circleImageWithImage:(UIImage *)image borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor;
 @end

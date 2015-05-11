@@ -9,6 +9,7 @@
 #import "WKRoleCell.h"
 #import "UIImage+Circle.h"
 #import "Common.h"
+
 #define kIconWH 79
 #define kMargin 10
 #define kBGColor [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0]
@@ -25,7 +26,7 @@
         CGPoint center = iconView.center;
         center.x = frame.size.width/2;
         iconView.center = center;
-        iconView.tag = 1;
+        self.icon = iconView;
         [self addSubview:iconView];
         CGFloat y = CGRectGetMaxY(iconView.frame)+kMargin;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, y, frame.size.width, 15)];
@@ -50,12 +51,11 @@
     
 }
 - (void)setRoleInfo:(WKRoleInfo *)roleInfo{
-    UIImageView *imageView = (UIImageView *)[self viewWithTag:1];
     __block UIImage *image = [UIImage imageWithContentsOfFile:roleInfo.imageURL];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIImage *icon = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
         dispatch_async(dispatch_get_main_queue(), ^{
-            imageView.image = icon;
+            self.icon.image = icon;
         });
     });
     

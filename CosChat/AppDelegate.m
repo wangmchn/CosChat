@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "WKRolePickController.h"
+#import "WKMainViewController.h"
 #import "WKWelcomeController.h"
 #import "WKNavigationController.h"
 #import <AVOSCloud/AVOSCloud.h>
@@ -20,6 +21,7 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     [AVOSCloud setApplicationId:kAVOSAppId clientKey:kAVOSAppKey];
     // 状态栏样式
     [application setStatusBarStyle:UIStatusBarStyleLightContent];

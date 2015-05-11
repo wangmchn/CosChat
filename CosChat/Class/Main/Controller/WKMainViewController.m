@@ -5,17 +5,22 @@
 //  Created by zzx🐹 on 15/5/4.
 //  Copyright (c) 2015年 WeiKe. All rights reserved.
 //
-
+// Controller header
 #import "WKMainViewController.h"
 #import "WKSettingViewController.h"
+#import "WKChatViewController.h"
+#import "WKNavigationController.h"
+#import "WKMainViewController.h"
+#import "WKRolePickController.h"
+// View
+#import "RTSpinKitView.h"
+#import "WKTagView.h"
+#import "WKMatchView.h"
+// Model
+#import "WKMatchContent.h"
 #import "WKRoleInfo.h"
 #import "NSString+filePath.h"
 #import "UIImage+Circle.h"
-#import "WKNavigationController.h"
-#import "WKMainViewController.h"
-#import "RTSpinKitView.h"
-#import "WKTagView.h"
-#import "WKChatViewController.h"
 #import "Common.h"
 // icon
 #define kIconWH      (kScreenHeight/568*120)
@@ -34,9 +39,10 @@
 #define kTagY (kScreenHeight-kScreenHeight/568*213)
 #define kTagFontSize 14
 
+#define kNextTag 1000
 #define kSetMargin 30
 #define kWKY 35
-@interface WKMainViewController ()
+@interface WKMainViewController () <WKMatchViewDelegate>
 @property (nonatomic, strong) WKRoleInfo *roleInfo;
 @property (nonatomic, strong) NSArray *titlesArray;
 @end
@@ -63,6 +69,7 @@
     }
     return _titlesArray;
 }
+#pragma mark - View
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -71,6 +78,15 @@
     [self addTitleBar];
     [self setUI];
 }
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+#pragma mark -
 // 导航栏隐藏，自己添加一个无背景的假导航栏
 - (void)addTitleBar{
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, kWKY, 81, 17)];
@@ -84,27 +100,15 @@
     [rightItem setImage:[UIImage imageNamed:@"Settings"] forState:UIControlStateNormal];
     [rightItem addTarget:self action:@selector(setting:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:rightItem];
-    UIButton *leftItem = [[UIButton alloc] initWithFrame:CGRectMake(18, kWKY, 40, 18)];
-    [leftItem setTitle:@"Back" forState:UIControlStateNormal];
-    leftItem.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    [leftItem addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:leftItem];
 }
 - (void)setting:(id)sender{
-    
     WKSettingViewController *set = [[WKSettingViewController alloc] init];
     [self.navigationController pushViewController:set animated:YES];
 }
-- (void)back:(id)sender{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:YES];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+// 角色选择界面 (heshin 日语：害嗯心嗯——>变身)
+- (void)henshin:(UIGestureRecognizer *)recognizer{
+    WKRolePickController *rolePick = [[WKRolePickController alloc] init];
+    [self.navigationController pushViewController:rolePick animated:YES];
 }
 - (void)setUI{
     // 头像
@@ -113,8 +117,21 @@
     CGFloat imageX = (kScreenWidth-imageWH)/2;
     CGRect imageFrame = CGRectMake(imageX, imageY, imageWH, imageWH);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
-    imageView.image = [UIImage circleImageWithImage:[UIImage imageWithContentsOfFile:self.roleInfo.imageURL] borderWidth:kBorderWidth borderColor:kBorderColor];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.roleInfo.imageURL]) {
+        NSLog(@"fileExistsAtPath");
+        NSLog(@"%@",self.roleInfo.imageURL);
+    }else{
+        NSLog(@"!fileExistsAtPath");
+        NSLog(@"%@",self.roleInfo.imageURL);
+    }
+    NSData *data = [NSData dataWithContentsOfFile:self.roleInfo.imageURL];
+    UIImage *image = [UIImage imageWithData:data];
+    imageView.image = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
+    // 添加头像点击事件
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(henshin:)];
+    imageView.userInteractionEnabled = YES;
+    [imageView addGestureRecognizer:tapGesture];
     [self.view addSubview:imageView];
     
     // 名字
@@ -127,7 +144,6 @@
     nameLabel.font = [UIFont boldSystemFontOfSize:kNameFontSize];
     nameLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:nameLabel];
-    
     // 描述
     CGFloat descX = kDescXMargin;
     CGFloat descY = CGRectGetMaxY(nameFrame)+kDescYMargin;
@@ -140,7 +156,6 @@
     descLabel.textColor = [UIColor whiteColor];
     [descLabel sizeToFit];
     [self.view addSubview:descLabel];
-    
     // 标签
     CGFloat tagGap = (kScreenWidth-2*kDescXMargin-kTagW*3)/2;
     for (int i = 0; i < self.titlesArray.count; i++) {
@@ -150,7 +165,6 @@
         tag.userInteractionEnabled = NO;
         [self.view addSubview:tag];
     }
-    
     // 匹配按钮
     UIButton *match = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat matchX = kNextMargin;
@@ -158,6 +172,7 @@
     CGFloat matchY = kScreenHeight - matchH - kNextBMargin;
     CGFloat matchW = kScreenWidth - 2*matchX;
     match.frame = CGRectMake(matchX, matchY, matchW, matchH);
+    match.tag = kNextTag;
     [match setBackgroundImage:[UIImage imageNamed:@"next_button_nor"] forState:UIControlStateNormal];
     [match setBackgroundImage:[UIImage imageNamed:@"next_button_sel"] forState:UIControlStateHighlighted];
     [match setTitle:@"开始匹配" forState:UIControlStateNormal];
@@ -165,11 +180,27 @@
     [self.view addSubview:match];
 }
 - (void)match:(UIButton *)sender{
+    WKMatchView *match = [[WKMatchView alloc] initWithFrame:CGRectMake(15, 442.0/568*kScreenHeight, kScreenWidth-30, 87)];
+    match.delegate = self;
+    WKMatchContent *content = [[WKMatchContent alloc] initWithIcon:[UIImage imageNamed:@"superman"] name:@"超人" content:@"super~~~man!!" time:@"17:58"];
+    match.content = content;
+    [self.view addSubview:match];
+    sender.hidden = YES;
+    
 //    [self.navigationController popViewControllerAnimated:YES];
 //    RTSpinKitView *style=[[RTSpinKitView alloc]initWithStyle:RTSpinKitViewStyle9CubeGrid color:[UIColor colorWithRed:1.000 green:0.667 blue:0.442 alpha:1.000]];
 //    style.frame = CGRectMake(sender.frame.size.width*0.633, sender.frame.size.height/10, 0, 0);
 //    [sender addSubview:style];
+
+}
+#pragma mark - Match View delegate
+- (void)matchViewDidPressedByUser:(WKMatchView *)matchView{
     WKChatViewController *chatRoom = [[WKChatViewController alloc] init];
     [self.navigationController pushViewController:chatRoom animated:YES];
+}
+- (void)matchViewDidDisapper:(WKMatchView *)matchView{
+    [matchView removeFromSuperview];
+    UIButton *match = (UIButton *)[self.view viewWithTag:kNextTag];
+    match.hidden = NO;
 }
 @end

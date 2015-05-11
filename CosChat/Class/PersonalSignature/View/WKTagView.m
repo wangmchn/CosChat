@@ -16,6 +16,6 @@
     self.titleLabel.font = [UIFont systemFontOfSize:kFontSize];
     
     [self setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
-    [self setBackgroundImage:[UIImage imageNamed:@"tag_sel"] forState:UIControlStateHighlighted];
+    [self setBackgroundImage:[UIImage imageNamed:@"tag_sel"] forState:UIControlStateSelected];
 }
 @end
