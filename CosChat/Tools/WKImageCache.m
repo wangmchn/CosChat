@@ -31,14 +31,30 @@ static id _imageCache;
     return _imageCache;
 }
 + (instancetype)sharedImageCache{
-    _imageCache = [[self alloc] init];
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        _imageCache = [[self alloc] init];
+    });
     return _imageCache;
 }
+// init
 - (instancetype)init{
     if (self = [super init]) {
         fileManager = [NSFileManager defaultManager];
-    }
+        // 通知
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(clearMemory)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(cleanDisk)
+                                                     name:UIApplicationWillTerminateNotification
+                                                   object:nil];    }
     return self;
+}
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 #pragma mark - Lazy Load
 // 内存缓存
@@ -62,7 +78,6 @@ static id _imageCache;
     return _directoryPath;
 }
 #pragma mark - Public Methods
-
 #pragma mark Query Image
 - (UIImage *)queryImageByKey:(NSString *)key{
     UIImage *image = [self imageFromMemoryCacheForKey:key];
@@ -74,7 +89,7 @@ static id _imageCache;
 }
 // 从内存缓存中找图片
 - (UIImage *)imageFromMemoryCacheForKey:(NSString *)key{
-    return [self.memCache valueForKey:key];
+    return [self.memCache objectForKey:key];
 }
 // 从沙盒缓存中找图片
 - (UIImage *)imageFromDiskCacheForKey:(NSString *)key{
@@ -84,37 +99,99 @@ static id _imageCache;
         // 沙盒存在，加载图片，并添加到内存缓存
         NSData *data = [NSData dataWithContentsOfFile:filePath];
         UIImage *image = [UIImage imageWithData:data];
-        if (![self.memCache valueForKey:key]) {
+        if (![self.memCache objectForKey:key]) {
             [self.memCache setObject:image forKey:key];
         }
         return image;
     }
     return nil;
 }
-// 从远程服务器下载图片
-
-
+// 从远程服务器下载图片,并缓存
+- (void)downloadImageWithURL:(NSString *)strURL completion:(WKImageCacheDownloadCompletion)doneBlock{
+    NSURL *url = [NSURL URLWithString:strURL];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        UIImage *image = [UIImage imageWithData:data];
+        doneBlock(image,connectionError);
+        if (image) {
+            NSString *key = [strURL lastPathComponent];
+            [self storeImage:image forKey:key toDisk:YES];
+        }
+    }];
+}
 #pragma mark Store Image
 - (void)storeImage:(UIImage *)image forKey:(NSString *)key toDisk:(BOOL)toDisk{
-    // 若缓存中没有，则现在缓存中存一份
-    if (![self.memCache valueForKey:key]) {
+    // 若缓存中没有，则先在缓存中存一份
+    if (![self.memCache objectForKey:key]) {
         [self.memCache setObject:image forKey:key];
     }
     if (toDisk) {
         // 存到沙盒
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self storeImageToDisk:image forKey:key];
+    }
+}
+- (void)storeImageToDisk:(UIImage *)image forKey:(NSString *)key{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // 异步无法访问主线程的 autoreleasepool (有创建才需要？)
+        @autoreleasepool {
             NSString *pathComponent = [self cachedFileNameForKey:key];
             NSString *filePath = [self.directoryPath stringByAppendingPathComponent:pathComponent];
             NSData *data = UIImagePNGRepresentation(image);
             [data writeToFile:filePath atomically:YES];
-        });
+        }
+    });
+}
+#pragma mark Remove Image
+- (void)removeAllImageFromDisk:(WKClearMemoryComletion)completion{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if ([fileManager fileExistsAtPath:self.directoryPath]) {
+            [fileManager removeItemAtPath:self.directoryPath error:nil];
+            [fileManager createDirectoryAtPath:self.directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion();
+            });
+        }
+    });
+
+}
+- (void)removeImageByKey:(NSString *)key fromDisk:(BOOL)fromDisk completion:(WKClearMemoryComletion)completion{
+    [self removeImageFromMemoryByKey:key];
+    
+    if (fromDisk) {
+        [self removeImageFromDiskByKey:key completion:completion];
     }
 }
+- (void)removeImageFromMemoryByKey:(NSString *)key{
+    if ([self.memCache objectForKey:key]) {
+        [self.memCache removeObjectForKey:key];
+    }
+}
+- (void)removeImageFromDiskByKey:(NSString *)key completion:(WKClearMemoryComletion)completion{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        @autoreleasepool {
+            NSString *filename = [self cachedFileNameForKey:key];
+            NSString *filePath = [self.directoryPath stringByAppendingPathComponent:filename];
+            if ([fileManager fileExistsAtPath:filePath]) {
+                [fileManager removeItemAtPath:filePath error:nil];
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion();
+        });
+    });
+}
 #pragma mark - Private Methods
+- (void)clearMemory{
+    [self.memCache removeAllObjects];
+}
+- (void)cleanDisk{
+    [self removeAllImageFromDisk:nil];
+}
 - (NSString *)filePathForName:(NSString *)name{
     NSString *directory = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
     return [directory stringByAppendingPathComponent:name];
 }
+// MD5加密
 - (NSString *)cachedFileNameForKey:(NSString *)key {
     const char *str = [key UTF8String];
     if (str == NULL) {

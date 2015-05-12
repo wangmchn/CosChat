@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVOSCloudIM/AVOSCloudIM.h>
 
 @interface IMStore : NSObject
+@property (nonatomic, strong) AVIMClient *imClient;
++ (instancetype)sharedIMStore;
 
+- (void)addIMClientWithClient
 @end
