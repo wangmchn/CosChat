@@ -185,8 +185,8 @@
 		4DA4E2A91AF796B300205B7B /* WKSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKSettingViewController.m; sourceTree = "<group>"; };
 		4DA4E2AB1AF7971600205B7B /* WKSettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKSettingItem.h; sourceTree = "<group>"; };
 		4DA4E2AC1AF7971600205B7B /* WKSettingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKSettingItem.m; sourceTree = "<group>"; };
-		4DAA206F1B0089C200F7D895 /* IMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMStore.h; sourceTree = "<group>"; };
-		4DAA20701B0089C200F7D895 /* IMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMStore.m; sourceTree = "<group>"; };
+		4DAA206F1B0089C200F7D895 /* IMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IMStore.h; path = ../../../Tools/IMStore.h; sourceTree = "<group>"; };
+		4DAA20701B0089C200F7D895 /* IMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IMStore.m; path = ../../../Tools/IMStore.m; sourceTree = "<group>"; };
 		4DAA20721B00911400F7D895 /* WKImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKImageCache.h; sourceTree = "<group>"; };
 		4DAA20731B00911400F7D895 /* WKImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKImageCache.m; sourceTree = "<group>"; };
 		4DB26AA41AFA847F00428EFF /* WKTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKTagView.h; sourceTree = "<group>"; };
@@ -446,6 +446,8 @@
 		4D6EF6DC1AFC8265004E6822 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4DAA206F1B0089C200F7D895 /* IMStore.h */,
+				4DAA20701B0089C200F7D895 /* IMStore.m */,
 				4D6EF6DD1AFC8265004E6822 /* ChatModel.h */,
 				4D6EF6DE1AFC8265004E6822 /* ChatModel.m */,
 			);
@@ -455,6 +457,7 @@
 		4D781CFA1AF0BEE70049D0F5 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				4DD7B93D1AFFB0BE006FDCCD /* Tools */,
 				4DED79A01AFB54CB0022B349 /* ChatRoom */,
 				4DA4E29D1AF78E4500205B7B /* PersonalSignature */,
 				4D1019A51AF0F3A00033FDE6 /* Welcome */,
@@ -622,12 +625,11 @@
 		4DD7B93D1AFFB0BE006FDCCD /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				4DAA206F1B0089C200F7D895 /* IMStore.h */,
-				4DAA20701B0089C200F7D895 /* IMStore.m */,
 				4DAA20721B00911400F7D895 /* WKImageCache.h */,
 				4DAA20731B00911400F7D895 /* WKImageCache.m */,
 			);
-			path = Tools;
+			name = Tools;
+			path = ../Tools;
 			sourceTree = "<group>";
 		};
 		4DED79A01AFB54CB0022B349 /* ChatRoom */ = {
@@ -746,7 +748,6 @@
 		4DF41F551AE6A764008D0BFA /* CosChat */ = {
 			isa = PBXGroup;
 			children = (
-				4DD7B93D1AFFB0BE006FDCCD /* Tools */,
 				4D06BBCE1AFA552B002077D9 /* Util */,
 				4D781D1F1AF0D4640049D0F5 /* Category */,
 				4D781CFA1AF0BEE70049D0F5 /* Class */,

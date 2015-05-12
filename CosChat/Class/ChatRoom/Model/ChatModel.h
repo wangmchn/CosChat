@@ -11,7 +11,6 @@
 @interface ChatModel : NSObject
 
 @property (nonatomic, strong) NSMutableArray *items;
-//@property (nonatomic) BOOL isGroupChat;
 - (void)addSpecifiedItem:(NSDictionary *)dic;
-
+- (void)addSpecifiedItemFromOther:(NSDictionary *)dic;
 @end

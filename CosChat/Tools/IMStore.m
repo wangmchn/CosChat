@@ -9,12 +9,18 @@
 #import "IMStore.h"
 
 @interface IMStore ()
-
+@property (nonatomic, strong) NSCache *cache;
 @end
 
 static id _IMStore;
 @implementation IMStore
-// set up
+- (AVIMClient *)imClient{
+    if (_imClient == nil) {
+        _imClient = [[AVIMClient alloc] init];
+    }
+    return _imClient;
+}
+#pragma mark - Set up
 + (instancetype)allocWithZone:(struct _NSZone *)zone{
     static dispatch_once_t once;
     dispatch_once(&once, ^{

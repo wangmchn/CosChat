@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 yq. All rights reserved.
 //
 
+#import <AVOSCloudIM/AVOSCloudIM.h>
+#import "IMStore.h"
 #import "WKChatViewController.h"
 #import "UUMessageCell.h"
 #import "UUMessageFrame.h"
@@ -16,11 +18,12 @@
 #define kUUMessageIdentifier @"UUMessageCell"
 #define kUUIFViewH 40
 #define kChatContentY (self.chatTableView.contentOffset.y+64)
-@interface WKChatViewController () <UUMessageCellDelegate, UUInputFunctionViewDelegate, UITableViewDataSource,UITableViewDelegate>
+@interface WKChatViewController () <UUMessageCellDelegate, UUInputFunctionViewDelegate, UITableViewDataSource,UITableViewDelegate,AVIMClientDelegate>
 @property (nonatomic, strong) ChatModel *chatModel;
 @property (nonatomic, strong) UITableView *chatTableView;
 @property (nonatomic, weak) UUInputFunctionView *IFView;
 @property (nonatomic, assign) CGFloat cellMaxY;
+@property (nonatomic, strong) AVIMConversation *conversation;
 @end
 
 @implementation WKChatViewController
@@ -87,6 +90,8 @@
 #pragma mark - View
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"尔康";
     
@@ -104,6 +109,21 @@
     self.chatTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [self addInputFunc];
+    
+    IMStore *store = [IMStore sharedIMStore];
+    NSString *myId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    NSLog(@"%@",myId);
+    NSString *otherId = @"E05F6EE2-F065-484C-8345-F9157D363F44";
+    NSArray *array = @[myId,otherId];
+    __weak typeof(self) weakSelf = self;
+    store.imClient.delegate = self;
+    [store.imClient createConversationWithName:@"尔康" clientIds:array attributes:nil options:AVIMConversationOptionNone callback:^(AVIMConversation *conversation, NSError *error) {
+        if (error) {
+            NSLog(@"%@",[error description]);
+        }else{
+            weakSelf.conversation = conversation;
+        }
+    }];
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -148,11 +168,19 @@
 
 #pragma mark - UUInputFuncDelegate
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
-    NSDictionary *dic = @{@"strContent": message,
-                          @"type": @(UUMessageTypeText)};
-    [self.chatModel addSpecifiedItem:dic];
-    [self.chatTableView reloadData];
-    [self tableViewScrollToBottom];
+    [self.conversation sendMessage:[AVIMMessage messageWithContent:message] callback:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            NSLog(@"succeeded");
+            NSDictionary *dic = @{@"strContent": message,
+                                  @"type": @(UUMessageTypeText)};
+            [self.chatModel addSpecifiedItem:dic];
+            [self.chatTableView reloadData];
+            [self tableViewScrollToBottom];
+        }else{
+            NSLog(@"%@",[error description]);
+        }
+    }];
+    
 }
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image{
     NSDictionary *dic = @{@"picture": image,
@@ -175,5 +203,15 @@
 }
 - (void)cellContentDidClick:(UUMessageCell *)cell image:(UIImage *)contentImage{
     NSLog(@"%@",cell);
+}
+#pragma mark - IMClient delegate
+- (void)conversation:(AVIMConversation *)conversation didReceiveCommonMessage:(AVIMMessage *)message{
+    NSLog(@"%@",message.conversationId);
+    NSDictionary *dic = @{@"strContent": message.content,
+                          @"type": @(UUMessageTypeText)};
+    
+    [self.chatModel addSpecifiedItemFromOther:dic];
+    [self.chatTableView reloadData];
+    [self tableViewScrollToBottom];
 }
 @end

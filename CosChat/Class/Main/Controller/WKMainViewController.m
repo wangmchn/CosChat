@@ -6,7 +6,9 @@
 //  Copyright (c) 2015年 WeiKe. All rights reserved.
 //
 // Controller header
+
 #import "WKMainViewController.h"
+#import "IMStore.h"
 #import "WKSettingViewController.h"
 #import "WKChatViewController.h"
 #import "WKNavigationController.h"
@@ -42,7 +44,7 @@
 #define kNextTag 1000
 #define kSetMargin 30
 #define kWKY 35
-@interface WKMainViewController () <WKMatchViewDelegate>
+@interface WKMainViewController () <WKMatchViewDelegate,AVIMClientDelegate>
 @property (nonatomic, strong) WKRoleInfo *roleInfo;
 @property (nonatomic, strong) NSArray *titlesArray;
 @end
@@ -117,13 +119,13 @@
     CGFloat imageX = (kScreenWidth-imageWH)/2;
     CGRect imageFrame = CGRectMake(imageX, imageY, imageWH, imageWH);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.roleInfo.imageURL]) {
-        NSLog(@"fileExistsAtPath");
-        NSLog(@"%@",self.roleInfo.imageURL);
-    }else{
-        NSLog(@"!fileExistsAtPath");
-        NSLog(@"%@",self.roleInfo.imageURL);
-    }
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:self.roleInfo.imageURL]) {
+//        NSLog(@"fileExistsAtPath");
+//        NSLog(@"%@",self.roleInfo.imageURL);
+//    }else{
+//        NSLog(@"!fileExistsAtPath");
+//        NSLog(@"%@",self.roleInfo.imageURL);
+//    }
     NSData *data = [NSData dataWithContentsOfFile:self.roleInfo.imageURL];
     UIImage *image = [UIImage imageWithData:data];
     imageView.image = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
@@ -180,18 +182,21 @@
     [self.view addSubview:match];
 }
 - (void)match:(UIButton *)sender{
-    WKMatchView *match = [[WKMatchView alloc] initWithFrame:CGRectMake(15, 442.0/568*kScreenHeight, kScreenWidth-30, 87)];
-    match.delegate = self;
-    WKMatchContent *content = [[WKMatchContent alloc] initWithIcon:[UIImage imageNamed:@"superman"] name:@"超人" content:@"super~~~man!!" time:@"17:58"];
-    match.content = content;
-    [self.view addSubview:match];
-    sender.hidden = YES;
-    
-//    [self.navigationController popViewControllerAnimated:YES];
-//    RTSpinKitView *style=[[RTSpinKitView alloc]initWithStyle:RTSpinKitViewStyle9CubeGrid color:[UIColor colorWithRed:1.000 green:0.667 blue:0.442 alpha:1.000]];
-//    style.frame = CGRectMake(sender.frame.size.width*0.633, sender.frame.size.height/10, 0, 0);
-//    [sender addSubview:style];
-
+    // 与leanCloud建立连接
+    IMStore *store = [IMStore sharedIMStore];
+    NSString *clientId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    [store.imClient openWithClientId:clientId callback:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            WKMatchView *match = [[WKMatchView alloc] initWithFrame:CGRectMake(15, 442.0/568*kScreenHeight, kScreenWidth-30, 87)];
+            match.delegate = self;
+            WKMatchContent *content = [[WKMatchContent alloc] initWithIcon:[UIImage imageNamed:@"superman"] name:@"超人" content:@"super~~~man!!" time:@"17:58"];
+            match.content = content;
+            [self.view addSubview:match];
+            sender.hidden = YES;
+        }else{
+            NSLog(@"%@",[error description]);
+        }
+    }];
 }
 #pragma mark - Match View delegate
 - (void)matchViewDidPressedByUser:(WKMatchView *)matchView{
