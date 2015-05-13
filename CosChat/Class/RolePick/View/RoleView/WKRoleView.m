@@ -76,31 +76,31 @@
 }
 - (void)setRoleInfo:(WKRoleInfo *)roleInfo{
     _roleInfo = roleInfo;
-//    NSString *directoryPath = [NSString cachePathWithFileName:@"Icons"];
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    UIImage *icon;
-//    // 创建文件夹
-//    if (![fileManager fileExistsAtPath:directoryPath]) {
-//        [fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
-//    }
-//    // 看图片是否有缓存
-//    NSString *filePath = [directoryPath stringByAppendingPathComponent:[roleInfo.imageURL lastPathComponent]];
-//    if (![fileManager fileExistsAtPath:filePath]) {
-//        // 没有缓存
-//        UIImage *image = [UIImage imageWithContentsOfFile:roleInfo.imageURL];
-//        icon = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
-//        roleInfo.imageURL = filePath;
-//        NSData *data = UIImagePNGRepresentation(icon);
-//        [data writeToFile:filePath atomically:YES];
-//    }else{
-//        // 有缓存
-//        icon = [UIImage imageWithContentsOfFile:filePath];
-//    }
-    WKImageCache *cache = [WKImageCache sharedImageCache];
-    [cache downloadImageWithURL:@"http://h.hiphotos.baidu.com/image/pic/item/fc1f4134970a304ef20748f3d3c8a786c9175c96.jpg" completion:^(UIImage *image, NSError *error) {
-        NSLog(@"image:%@",image);
-    }];
-//    self.icon.image = icon;
+    NSString *directoryPath = [NSString cachePathWithFileName:@"Icons"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    UIImage *icon;
+    // 创建文件夹
+    if (![fileManager fileExistsAtPath:directoryPath]) {
+        [fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    // 看图片是否有缓存
+    NSString *filePath = [directoryPath stringByAppendingPathComponent:[roleInfo.imageURL lastPathComponent]];
+    if (![fileManager fileExistsAtPath:filePath]) {
+        // 没有缓存
+        UIImage *image = [UIImage imageWithContentsOfFile:roleInfo.imageURL];
+        icon = [UIImage circleImageWithImage:image borderWidth:kBorderWidth borderColor:kBorderColor];
+        roleInfo.imageURL = filePath;
+        NSData *data = UIImagePNGRepresentation(icon);
+        [data writeToFile:filePath atomically:YES];
+    }else{
+        // 有缓存
+        icon = [UIImage imageWithContentsOfFile:filePath];
+    }
+//    WKImageCache *cache = [WKImageCache sharedImageCache];
+//    [cache downloadImageWithURL:@"http://h.hiphotos.baidu.com/image/pic/item/fc1f4134970a304ef20748f3d3c8a786c9175c96.jpg" completion:^(UIImage *image, NSError *error) {
+//        NSLog(@"image:%@",image);
+//    }];
+    self.icon.image = icon;
     self.nameLabel.text = roleInfo.name;
     self.descLabel.text = roleInfo.desc;
 }
