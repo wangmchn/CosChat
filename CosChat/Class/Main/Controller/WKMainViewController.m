@@ -5,20 +5,18 @@
 //  Created by zzx🐹 on 15/5/4.
 //  Copyright (c) 2015年 WeiKe. All rights reserved.
 //
-// Controller header
 
 #import "WKMainViewController.h"
-#import "IMStore.h"
 #import "WKSettingViewController.h"
 #import "WKChatViewController.h"
 #import "WKNavigationController.h"
 #import "WKMainViewController.h"
 #import "WKRolePickController.h"
 // View
-#import "RTSpinKitView.h"
 #import "WKTagView.h"
 #import "WKMatchView.h"
 // Model
+#import "IMStore.h"
 #import "WKMatchContent.h"
 #import "WKRoleInfo.h"
 #import "NSString+filePath.h"
@@ -205,6 +203,15 @@
 }
 - (void)matchViewDidDisapper:(WKMatchView *)matchView{
     [matchView removeFromSuperview];
+    
+    IMStore *store = [IMStore sharedIMStore];
+    [store.imClient closeWithCallback:^(BOOL succeeded, NSError *error) {
+        NSLog(@"%@",error);
+        if (succeeded) {
+            NSLog(@"close succeed");
+        }
+    }];
+    
     UIButton *match = (UIButton *)[self.view viewWithTag:kNextTag];
     match.hidden = NO;
 }

@@ -113,7 +113,7 @@
     IMStore *store = [IMStore sharedIMStore];
     NSString *myId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     NSLog(@"%@",myId);
-    NSString *otherId = @"E05F6EE2-F065-484C-8345-F9157D363F44";
+    NSString *otherId = @"922F2769-6810-4246-A369-6F79D96D9FF8";
     NSArray *array = @[myId,otherId];
     __weak typeof(self) weakSelf = self;
     store.imClient.delegate = self;

@@ -9,6 +9,8 @@
 #ifndef CosChat_Pre_h
 #define CosChat_Pre_h
 
+#define iOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
+
 #define iPhone4  (int)[UIScreen mainScreen].bounds.size.height==480
 #define iPhone5  (int)[UIScreen mainScreen].bounds.size.height==568
 #define iPhone6  (int)[UIScreen mainScreen].bounds.size.height==667
