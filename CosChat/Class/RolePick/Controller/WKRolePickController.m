@@ -15,61 +15,40 @@
 #import "WKSignatureController.h"
 #import "NSString+filePath.h"
 #import "Common.h"
-#define kCollectionCellIdentifier @"collectionCell"
 #define kRoleRate 2.33
 #define kNextRate 4.27
+#define kGetAllChatters @"chatter/getAllChatters"
 #define kBlackColor [UIColor colorWithRed:0 green:0 blue:0 alpha:1.0]
-#define kMenuColor  [UIColor colorWithRed:219.0/255.0 green:213.0/255.0 blue:209.0/255.0 alpha:1.0]
-@interface WKRolePickController () <WKPageViewDataSource,WKPageViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>
+#define kMenuColor  [UIColor colorWithRed:219.0/255.0 green:213.0/255.0 blue:209.0/255.0 alpha:0.7]
+@interface WKRolePickController () <WKPageViewDataSource,WKPageViewDelegate>
 @property (nonatomic, weak)   WKPageView *pageView;
 // 顶部选中角色的详细展示视图
 @property (nonatomic, weak)   WKRoleView *roleView;
 // 角色信息
 @property (nonatomic, strong) WKRoleInfo *roleInfo;
-// 记录当前选中的cell路径
-@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
-// 记录当前页面的页号
-@property (nonatomic, assign) NSInteger currentPage;
-// 记录当前选中cell所在的页号
-@property (nonatomic, assign) NSInteger selectedPage;
-// 记录选过的角色的页面及路径
-// 方便清除由于pageCell复用引起的混乱
-@property (nonatomic, strong) NSMutableDictionary *selectedPathes;
 //
-@property (nonatomic, strong) NSArray *items;
-@property (nonatomic, strong) NSArray *roles;
-
-@property (nonatomic, strong) WKRoleInfo *testInfo;
+@property (nonatomic, strong) NSArray *keys;
+@property (nonatomic, strong) NSMutableArray *values;
+@property (nonatomic, strong) NSDictionary *rolesValues;
+@property (nonatomic, strong) NSDictionary *rolesDict;
 @end
 
 @implementation WKRolePickController
 #pragma mark - lazy load
-- (NSIndexPath *)selectedIndexPath{
-    if (_selectedIndexPath == nil) {
-        _selectedIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+// 假数据
+- (NSArray *)keys{
+    if (_keys == nil) {
+        _keys = @[@"最新",@"西游记",@"名著",@"LOL",@"DotA",@"LOL",@"游戏"];
     }
-    return _selectedIndexPath;
+    return _keys;
 }
-- (NSMutableDictionary *)selectedPathes{
-    if (_selectedPathes == nil) {
-        _selectedPathes = [NSMutableDictionary dictionary];
-        [_selectedPathes setObject:self.selectedIndexPath forKey:@(self.selectedPage)];
+- (NSMutableArray *)values{
+    if (_values == nil) {
+        _values = [NSMutableArray array];
     }
-    return _selectedPathes;
+    return _values;
 }
-- (NSArray *)items{
-    if (_items == nil) {
-        _items = @[@"最新",@"言情",@"武侠",@"明星",@"DotA",@"LOL",@"WOW",@"高富帅",@"白富美",@"屌丝",@"壮汉"];
-    }
-    return _items;
-}
-- (WKRoleInfo *)testInfo{
-    if (_testInfo == nil) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"Chopper" ofType:@"png"];
-        _testInfo = [[WKRoleInfo alloc] initWithName:@"乔巴" desc:@"我不是狸猫啦,你看,我有角!" imageURL:path];
-    }
-    return _testInfo;
-}
+// 假数据
 - (WKRoleInfo *)roleInfo{
     if (_roleInfo == nil) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"superman" ofType:@"png"];
@@ -80,6 +59,44 @@
 #pragma mark - Private methods
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    NSString *filePath = [NSString documentPathWithFileName:@"rolesInfo.plist"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"rolesInfo.plist" ofType:nil];
+    self.rolesDict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    self.keys = self.rolesDict.allKeys;
+    NSArray *array = self.rolesDict.allValues;
+    for (NSArray *temp in array) {
+        NSMutableArray *item = [NSMutableArray array];
+        for (NSDictionary *dict in temp) {
+            NSString *name = dict[@"name"];
+            NSString *desc = dict[@"content"];
+            NSString *imageURL = [[NSBundle mainBundle] pathForResource:@"Chopper" ofType:@"png"];
+            WKRoleInfo *roleInfo = [[WKRoleInfo alloc] initWithName:name desc:desc imageURL:imageURL];
+            [item addObject:roleInfo];
+        }
+        [self.values addObject:item];
+    }
+    
+//    NSString *strURL = [NSString stringWithFormat:@"%@%@",kAddress,kGetAllChatters];
+//    NSURL *url =[NSURL URLWithString:strURL];
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0f];
+//    NSString *strBody = [NSString stringWithFormat:@"{\"message\":\"begin\"}"];
+//
+//    NSData *body = [strBody dataUsingEncoding:NSUTF8StringEncoding];
+//
+//    [request setHTTPMethod:@"POST"];
+//    [request setHTTPBody:body];
+//    __weak typeof(self) wself = self;
+//    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//        wself.rolesDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+//        wself.keys = wself.rolesDict.allKeys;
+//        wself.values = wself.rolesDict.allValues;
+//        if (![wself.keys[0] isEqualToString:@"errorCode"]) {
+//            [wself.pageView reloadData];
+//            NSString *filePath = [NSString documentPathWithFileName:@"rolesInfo.plist"];
+//            [wself.rolesDict writeToFile:filePath atomically:YES];
+//        }
+//    }];
+    
     // pre set
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Coschat_white"]];
     
@@ -141,42 +158,28 @@
     NSString *filePath = [NSString documentPathWithFileName:kRoleFileName];
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-    NSLog(@"%@",self.roleView.roleInfo.imageURL);
     [archiver encodeObject:self.roleView.roleInfo forKey:kRoleInfoKey];
     [archiver finishEncoding];
     [data writeToFile:filePath atomically:YES];
-    
     
     WKSignatureController *sign = [[WKSignatureController alloc] init];
     [self.navigationController pushViewController:sign animated:YES];
 }
 #pragma mark - Page view dataSource
 - (NSUInteger)numbersOfPagesInPageView:(WKPageView *)pageView{
-    return self.items.count;
+    return self.keys.count;
 }
 - (NSArray *)menuItemsForMenuViewInPageView:(WKPageView *)pageView{
-    return self.items;
+    return self.keys;
+}
+- (NSArray *)roleInfosForPageCellInPageView:(WKPageView *)pageView{
+    return self.values;
 }
 - (WKPageCell *)pageView:(WKPageView *)pageView cellForIndex:(NSInteger)index{
     static NSString *identifier = @"pageCell";
     WKPageCell *cell = [pageView dequeueReusableCellWithIdentifier:identifier];
-    
     if (cell == nil) {
         cell = [[WKPageCell alloc] initWithIdentifier:identifier];
-        [cell registerClass:[WKRoleCell class] forCellWithReuseIdentifier:kCollectionCellIdentifier];
-        cell.delegate = self;
-        cell.dataSource = self;
-        cell.backgroundColor = [UIColor colorWithRed:167.0/255.0 green:167.0/255.0 blue:167.0/255.0 alpha:1.0];
-    }
-    // 重置每个Page的Cell的选中状态 (由于cell的复用引起)
-    if (self.selectedPage != index) {
-        NSArray *indexPathes = self.selectedPathes.allValues;
-        for (NSIndexPath *indexPath in indexPathes) {
-            [cell deselectItemAtIndexPath:indexPath animated:NO];
-        }
-    }else{
-        NSLog(@"%@",self.selectedIndexPath);
-        [cell selectItemAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionLeft];
     }
     return cell;
 }
@@ -198,33 +201,7 @@
 - (UIColor *)backgroundColorOfMenuViewInPageView:(WKPageView *)pageView{
     return kMenuColor;
 }
-- (void)pageView:(WKPageView *)pageView didChangedPageToIndex:(NSInteger)index{
-    self.currentPage = index;
-}
-- (void)pageView:(WKPageView *)pageView didEndDeceleratingAtPage:(WKPageCell *)pageCell andIndex:(NSInteger)index{
-    if (self.selectedPage == index) {
-        [pageCell selectItemAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionLeft];
-    }
-}
-#pragma mark - Collection view dataSource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 8;
-}
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-    return 1;
-}
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    WKRoleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCollectionCellIdentifier forIndexPath:indexPath];
-    cell.roleInfo = self.testInfo;
-    return cell;
-}
-#pragma mark - Collection view delegate
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    self.selectedIndexPath = indexPath;
-    self.selectedPage = self.currentPage;
-
-    [self.selectedPathes setObject:self.selectedIndexPath forKey:@(self.selectedPage)];
-    WKRoleCell *cell = (WKRoleCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    self.roleView.roleInfo = cell.roleInfo;
+- (void)pageView:(WKPageView *)pageView didSelectedItemAtIndexPath:(NSIndexPath *)indexPath{
+    self.roleView.roleInfo = self.values[indexPath.section][indexPath.row];
 }
 @end

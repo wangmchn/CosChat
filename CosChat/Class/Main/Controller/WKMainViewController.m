@@ -22,6 +22,7 @@
 #import "NSString+filePath.h"
 #import "UIImage+Circle.h"
 #import "Common.h"
+#import <AVOSCloudIM/AVOSCloudIM.h>
 // icon
 #define kIconWH      (kScreenHeight/568*120)
 #define kIconYMargin (kScreenHeight/568*86)

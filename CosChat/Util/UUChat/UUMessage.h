@@ -24,6 +24,7 @@ typedef enum {
 
 @interface UUMessage : NSObject
 
+
 @property (nonatomic, copy) NSString *strIcon;
 @property (nonatomic, copy) NSString *strId;
 @property (nonatomic, copy) NSString *strTime;
@@ -40,7 +41,6 @@ typedef enum {
 @property (nonatomic, assign) BOOL showDateLabel;
 
 - (void)setWithDict:(NSDictionary *)dict;
-
 - (void)minuteOffSetStart:(NSString *)start end:(NSString *)end;
 
 @end

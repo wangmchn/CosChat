@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-FMDB.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>08A2CF209F37180294421E3A</key>
+		<key>B09D8D3FC1C979B53DADE327</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>49456F0C950E7BCD5622AA14</key>
+		<key>C1575DEA061F56066875AA56</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F50A2B97C93209EED14E9140</key>
 		<dict>
 			<key>primary</key>
 			<true/>

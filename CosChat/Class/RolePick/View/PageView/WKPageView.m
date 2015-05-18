@@ -10,16 +10,22 @@
 #import "WKMenuView.h"
 #import "WKPageCell.h"
 #define kDefaultMH 30
+#define kSelectedSize 18
+#define kNormolSize   15
 #define kLineSpacing 0.5
-@interface WKPageView () <UIScrollViewDelegate, WKMenuViewDelegate>{
+@interface WKPageView () <UIScrollViewDelegate, WKMenuViewDelegate,WKPageCellDelegate>{
     BOOL animate;
 }
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
+@property (nonatomic, assign) int currentSection;
+
 @property (nonatomic, weak)   UIScrollView *scrollView;
 @property (nonatomic, weak)   WKMenuView *menuView;
 @property (nonatomic, strong) NSMutableSet *reusePool;
 @property (nonatomic, assign) CGFloat menuViewHeight;
 @property (nonatomic, strong) NSMutableDictionary *displayCells;
 @property (nonatomic, strong) NSMutableArray *cellFrames;
+@property (nonatomic, strong) NSArray *roleInfos;
 @end
 
 @implementation WKPageView
@@ -52,6 +58,12 @@
     }
     return _menuViewHeight;
 }
+- (NSArray *)roleInfos{
+    if (!_roleInfos) {
+        _roleInfos = [self.dataSource roleInfosForPageCellInPageView:self];
+    }
+    return _roleInfos;
+}
 - (void)willMoveToSuperview:(UIView *)newSuperview{
     [self reloadData];
 }
@@ -69,10 +81,18 @@
     if ([self.delegate respondsToSelector:@selector(titleColorOfMenuItemInPageView:withState:)]) {
         norColor = [self.delegate titleColorOfMenuItemInPageView:self withState:WKMenuItemTitleColorStateNormal];
         selColor = [self.delegate titleColorOfMenuItemInPageView:self withState:WKMenuItemTitleColorStateSelected];
+    }else{
+        
     }
     if ([self.delegate respondsToSelector:@selector(titleSizeOfMenuItemInPageView:withState:)]) {
         norSize = [self.delegate titleSizeOfMenuItemInPageView:self withState:WKMenuItemTitleSizeStateNormal];
         selSize = [self.delegate titleSizeOfMenuItemInPageView:self withState:WKMenuItemTitleSizeStateSelected];
+    }else{
+        /**
+         *  若没实现delegate 所得的float有可能会是一个最大值或者最小值，因为在此设置默认！！紧记！紧记！！
+         */
+        norSize = kNormolSize;
+        selSize = kSelectedSize;
     }
     WKMenuView *menuView = [[WKMenuView alloc] initWithFrame:frame buttonItems:items backgroundColor:color norSize:norSize selSize:selSize norColor:norColor selColor:selColor];
     menuView.delegate = self;
@@ -97,15 +117,6 @@
         CGFloat x = i * width;
         CGFloat y = 0;
         CGRect frame = CGRectMake(x, y, width, height);
-        
-        
-        if (i == 0) {
-            WKPageCell *cell = [self.dataSource pageView:self cellForIndex:i];
-            cell.frame = frame;
-            [scrollView addSubview:cell];
-            
-            [self.displayCells setObject:cell forKey:@(i)];
-        }
         [self.cellFrames addObject:[NSValue valueWithCGRect:frame]];
     }
     CGFloat contentX = self.frame.size.width*numOfCells;
@@ -136,10 +147,15 @@
                 // cell不存在时，问数据源要cell
                 cell = [self.dataSource pageView:self cellForIndex:i];
                 cell.frame = frame;
+                cell.delegate = self;
                 [self.scrollView addSubview:cell];
                 // 放到展示中的数组中，以便取用
                 [self.displayCells setObject:cell forKey:@(i)];
+                
+                cell.dataSource = self.roleInfos[i];
+                [cell reloadData];
             }
+            
         }else{
             // cell存在且不在屏幕中
             if (cell) {
@@ -151,7 +167,6 @@
             }
         }
     }
-//    NSLog(@"NumberOfCellsInScreen: %lu",(unsigned long)self.scrollView.subviews.count);
 }
 // 清空所有数组，字典，并移除所有子控件
 - (void)clearAllData{
@@ -172,8 +187,12 @@
     [self clearAllData];
     [self addMenuView];
     [self addScrollView];
+    [self layoutItems];
 }
 - (void)reloadDataForPage:(NSInteger)index{
+    [self reloadData];
+    CGPoint targetPoint = CGPointMake(index*self.frame.size.width, 0);
+    [self.scrollView setContentOffset:targetPoint animated:NO];
     NSLog(@"还未实现.敬请期待!");
 }
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier{
@@ -230,5 +249,14 @@
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     animate = YES;
+}
+#pragma mark - cell delegate
+- (void)pageCell:(WKPageCell *)pageCell didSelectedItemAtIndexPath:(NSIndexPath *)indexPath{
+    self.currentIndexPath = indexPath;
+    self.currentSection = self.scrollView.contentOffset.x/self.scrollView.frame.size.width;
+    NSIndexPath *indexP = [NSIndexPath indexPathForRow:indexPath.row inSection:self.currentSection];
+    if ([self.delegate respondsToSelector:@selector(pageView:didSelectedItemAtIndexPath:)]) {
+        [self.delegate pageView:self didSelectedItemAtIndexPath:indexP];
+    }
 }
 @end

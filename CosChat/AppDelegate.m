@@ -13,8 +13,8 @@
 #import "WKWelcomeController.h"
 #import "WKNavigationController.h"
 #import <AVOSCloud/AVOSCloud.h>
-#define kAVOSAppId  @"idi55wuv2gfgvayujmujeiwar3abv1diszmip6efzcu18go1"
-#define kAVOSAppKey @"idi55wuv2gfgvayujmujeiwar3abv1diszmip6efzcu18go1"
+#define kAVOSAppId  @"ve7vnlnj9ug7qevx0iv9qcq1abxvk5dze748o70p66wpsb87"
+#define kAVOSAppKey @"7ti6hxh6iy86xp0yl3ox2a28j6v4otfmoxb56lsarvx1g06o"
 @interface AppDelegate ()
 
 @end
@@ -24,6 +24,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [AVOSCloud setApplicationId:kAVOSAppId clientKey:kAVOSAppKey];
+    // 调试代码
+    [AVOSCloud setVerbosePolicy:kAVVerboseShow];
+    [AVLogger addLoggerDomain:AVLoggerDomainIM];
+    [AVLogger addLoggerDomain:AVLoggerDomainCURL];
+    [AVLogger setLoggerLevelMask:AVLoggerLevelAll];
     // 注册通知
     if (iOS_VERSION >= 8.0) {
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil];

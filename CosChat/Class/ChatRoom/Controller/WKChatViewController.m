@@ -15,15 +15,19 @@
 #import "UUInputFunctionView.h"
 #import "ChatModel.h"
 #import "Common.h"
+#import "SlidingViewManager.h"
+#import "WKPopMenuView.h"
 #define kUUMessageIdentifier @"UUMessageCell"
 #define kUUIFViewH 40
 #define kChatContentY (self.chatTableView.contentOffset.y+64)
 @interface WKChatViewController () <UUMessageCellDelegate, UUInputFunctionViewDelegate, UITableViewDataSource,UITableViewDelegate,AVIMClientDelegate>
 @property (nonatomic, strong) ChatModel *chatModel;
 @property (nonatomic, strong) UITableView *chatTableView;
-@property (nonatomic, weak) UUInputFunctionView *IFView;
+@property (nonatomic, weak)   UUInputFunctionView *IFView;
 @property (nonatomic, assign) CGFloat cellMaxY;
 @property (nonatomic, strong) AVIMConversation *conversation;
+@property(nonatomic,strong) WKPopMenuView *popMenuView;
+@property(nonatomic,strong) SlidingViewManager *slider;
 @end
 
 @implementation WKChatViewController
@@ -52,6 +56,10 @@
     [self.chatTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 - (void)keyboardChange:(NSNotification *)notification{
+    // zzx code
+    [self.slider slideViewOut];
+    
+    //
     NSDictionary *userInfo = [notification userInfo];
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
@@ -86,12 +94,25 @@
     
     [UIView commitAnimations];
 }
-
+-(void)popMenu
+{
+    self.popMenuView=[[WKPopMenuView alloc]init];
+    //    self.popMenuView.backgroundColor=[UIColor redColor];
+    self.slider=[[SlidingViewManager alloc]initWithInnerView:self.popMenuView containerView:self.view];
+    [self.slider slideViewIn];
+    
+    CGFloat newHeight=self.IFView.frame.size.height;
+    CGFloat newY=kScreenHeight-self.popMenuView.frame.size.height-newHeight;
+    CGFloat newX=0;
+    CGFloat newWidth=self.IFView.frame.size.width;
+    self.IFView.frame=CGRectMake(newX, newY, newWidth, newHeight);
+    
+}
 #pragma mark - View
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    self.chatModel = [[ChatModel alloc] init];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"尔康";
     
@@ -113,11 +134,13 @@
     IMStore *store = [IMStore sharedIMStore];
     NSString *myId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     NSLog(@"%@",myId);
-    NSString *otherId = @"922F2769-6810-4246-A369-6F79D96D9FF8";
+    NSString *otherId = @"123456";
     NSArray *array = @[myId,otherId];
     __weak typeof(self) weakSelf = self;
     store.imClient.delegate = self;
-    [store.imClient createConversationWithName:@"尔康" clientIds:array attributes:nil options:AVIMConversationOptionNone callback:^(AVIMConversation *conversation, NSError *error) {
+
+    
+    [store.imClient createConversationWithName:nil clientIds:array attributes:@{@"type":@0} options:AVIMConversationOptionNone callback:^(AVIMConversation *conversation, NSError *error) {
         if (error) {
             NSLog(@"%@",[error description]);
         }else{
@@ -162,7 +185,6 @@
 #pragma mark - Table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     UUMessageFrame *messageFrame = self.chatModel.items[indexPath.row];
-
     return messageFrame.cellHeight;
 }
 
@@ -171,9 +193,7 @@
     [self.conversation sendMessage:[AVIMMessage messageWithContent:message] callback:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             NSLog(@"succeeded");
-            NSDictionary *dic = @{@"strContent": message,
-                                  @"type": @(UUMessageTypeText)};
-            [self.chatModel addSpecifiedItem:dic];
+//            self.chatModel addTextMessageWithIcon:<#(NSString *)#> strId:<#(NSString *)#> time:<#(NSString *)#> name:<#(NSString *)#> strContent:<#(NSString *)#> from:<#(MessageFrom)#>
             [self.chatTableView reloadData];
             [self tableViewScrollToBottom];
         }else{
@@ -183,9 +203,10 @@
     
 }
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image{
+    
     NSDictionary *dic = @{@"picture": image,
                           @"type": @(UUMessageTypePicture)};
-    [self.chatModel addSpecifiedItem:dic];
+//    [self.chatModel addSpecifiedItem:dic];
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
 }
@@ -193,9 +214,12 @@
     NSDictionary *dic = @{@"voice": voice,
                           @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
                           @"type": @(UUMessageTypeVoice)};
-    [self.chatModel addSpecifiedItem:dic];
+//    [self.chatModel addSpecifiedItem:dic];
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
+}
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView didPressedPlusButton:(UIButton *)plusButton{
+    [self popMenu];
 }
 #pragma mark - UUMessageCell delegate
 - (void)headImageDidClick:(UUMessageCell *)cell userId:(NSString *)userId{
@@ -206,11 +230,14 @@
 }
 #pragma mark - IMClient delegate
 - (void)conversation:(AVIMConversation *)conversation didReceiveCommonMessage:(AVIMMessage *)message{
-    NSLog(@"%@",message.conversationId);
+    self.conversation = conversation;
+    NSLog(@"------");
+    NSLog(@"%@",message.content);
+    [[[UIAlertView alloc] initWithTitle:nil message:message.content delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
     NSDictionary *dic = @{@"strContent": message.content,
                           @"type": @(UUMessageTypeText)};
     
-    [self.chatModel addSpecifiedItemFromOther:dic];
+//    [self.chatModel addSpecifiedItemFromOther:dic];
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
 }

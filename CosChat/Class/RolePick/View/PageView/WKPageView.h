@@ -48,6 +48,8 @@ typedef enum{
  *  @return menuView的items的标题 (字符串，用NSArray封装)
  */
 - (NSArray *)menuItemsForMenuViewInPageView:(WKPageView *)pageView;
+
+- (NSArray *)roleInfosForPageCellInPageView:(WKPageView *)pageView;
 @end
 /**
  *  代理
@@ -109,6 +111,9 @@ typedef enum{
  *  @param index    当前页面的序号
  */
 - (void)pageView:(WKPageView *)pageView didEndDeceleratingAtPage:(WKPageCell *)pageCell andIndex:(NSInteger)index;
+
+
+- (void)pageView:(WKPageView *)pageView didSelectedItemAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @interface WKPageView : UIView

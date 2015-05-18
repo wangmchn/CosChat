@@ -12,6 +12,7 @@
 #import "UUAVAudioPlayer.h"
 //#import "UIImageView+AFNetworking.h"
 #import <UIButton+AFNetworking.h>
+#import "WKImageCache.h"
 #import "UUImageAvatarBrowser.h"
 
 @interface UUMessageCell ()<UUAVAudioPlayerDelegate>
@@ -141,11 +142,11 @@
     // 2、设置头像
     headImageBackView.frame = messageFrame.iconF;
     self.btnHeadImage.frame = CGRectMake(2, 2, ChatIconWH-4, ChatIconWH-4);
-    if (message.from == UUMessageFromMe) {
-        [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:message.strIcon]];
-    }else{
-        [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:message.strIcon]];
-    }
+    // 节省流量，重写改方法
+//    [self.btnHeadImage setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:message.strIcon]];
+    [self setHeadBtnBackgroundImageWithURL:message.strIcon];
+    
+    
     
     // 3、设置下标
     self.labelNum.text = message.strName;
@@ -213,7 +214,23 @@
     [self.btnContent setBackgroundImage:normal forState:UIControlStateNormal];
     [self.btnContent setBackgroundImage:normal forState:UIControlStateHighlighted];
 }
-
+- (void)setHeadBtnBackgroundImageWithURL:(NSString *)strURL{
+    NSString *key = [strURL lastPathComponent];
+    WKImageCache *cache = [WKImageCache sharedImageCache];
+    UIImage *image = [cache queryImageByKey:key];
+    if (!image) {
+        // 占位图
+        UIImage *placeHolder = [UIImage imageNamed:@"chat_ipunt_message"];
+        [self.btnHeadImage setBackgroundImage:placeHolder forState:UIControlStateNormal];
+        // 下载
+        __weak typeof(self) wself = self;
+        [cache downloadImageWithURL:strURL completion:^(UIImage *image, NSError *error) {
+            if (!error) {
+                [wself.btnHeadImage setBackgroundImage:image forState:UIControlStateNormal];
+            }
+        }];
+    }
+}
 @end
 
 

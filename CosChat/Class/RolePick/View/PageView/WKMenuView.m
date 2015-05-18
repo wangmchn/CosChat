@@ -37,7 +37,7 @@
         }else{
             self.bgColor = kBGColor;
         }
-        
+        self.backgroundColor = self.bgColor;
         _norSize = norSize;
         _selSize = selSize;
         _norColor = norColor;
@@ -91,7 +91,7 @@
     scrollView.contentSize = CGSizeMake(contentWidth, height);
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator   = NO;
-    scrollView.backgroundColor = self.bgColor;
+//    scrollView.backgroundColor = self.bgColor;
     [self addSubview:scrollView];
     self.scrollView = scrollView;
 }
@@ -102,7 +102,6 @@
         item.tag = (i+1); // view的默认tag为0，因而要避免设置tag为，紧记!!
         item.title = self.items[i];
         item.delegate = self;
-        item.backgroundColor = self.bgColor;
         if (_norSize > 0.0001) {
             item.normalSize = _norSize;
         }
@@ -165,4 +164,5 @@
 //        [self.delegate menuView:self didPressSearchButton:sender];
 //    }
 //}
+
 @end

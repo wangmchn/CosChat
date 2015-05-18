@@ -247,7 +247,7 @@
         for (WKTagView *btn in self.arrayOfButton) {
             CGFloat x=btn.frame.origin.x;
             [UIView transitionWithView:button duration:kAnimateInterval options:0 animations:^{
-                btn.frame=CGRectMake(x-kScreenWidth*0.323, kScreenHeight*0.17, kScreenWidth*0.234, kScreenHeight*0.05);
+                btn.frame=CGRectMake(x-kScreenWidth*0.323, kScreenHeight*0.2, kScreenWidth*0.234, kScreenHeight*0.05);
                 btn.tag=btn.tag-1;
             } completion:^(BOOL finished) {
                 NSLog(@"动画结束");
@@ -260,7 +260,7 @@
             if (btn.tag-1000>2) {
                 CGFloat x=btn.frame.origin.x;
                 [UIView transitionWithView:button duration:kAnimateInterval options:0 animations:^{
-                    btn.frame=CGRectMake(x-kScreenWidth*0.323, kScreenHeight*0.17, kScreenWidth*0.234, kScreenHeight*0.05);
+                    btn.frame=CGRectMake(x-kScreenWidth*0.323, kScreenHeight*0.2, kScreenWidth*0.234, kScreenHeight*0.05);
                     btn.tag=btn.tag-1;
                 } completion:^(BOOL finished) {
                     NSLog(@"动画结束");

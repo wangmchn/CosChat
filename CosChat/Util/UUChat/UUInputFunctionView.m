@@ -99,6 +99,7 @@
         
         //输入框
         self.TextViewInput = [[UITextView alloc] initWithFrame:CGRectMake(45, 5, Main_Screen_Width-2*45, 30)];
+//        [self.TextViewInput setFont:[UIFont systemFontOfSize:13]];
         self.TextViewInput.layer.cornerRadius = 4;
         self.TextViewInput.layer.masksToBounds = YES;
         self.TextViewInput.delegate = self;
@@ -251,8 +252,11 @@
     }
     else{
         [self.TextViewInput resignFirstResponder];
-        UIActionSheet *actionSheet= [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Images",nil];
-        [actionSheet showInView:self.window];
+//        UIActionSheet *actionSheet= [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Images",nil];
+//        [actionSheet showInView:self.window];
+        if ([self.delegate respondsToSelector:@selector(UUInputFunctionView:didPressedPlusButton:)]) {
+            [self.delegate UUInputFunctionView:self didPressedPlusButton:sender];
+        }
     }
 }
 
@@ -291,52 +295,52 @@
 }
 
 
-#pragma mark - Add Picture
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        [self addCarema];
-    }else if (buttonIndex == 1){
-        [self openPicLibrary];
-    }
-}
+//#pragma mark - Add Picture
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    if (buttonIndex == 0) {
+//        [self addCarema];
+//    }else if (buttonIndex == 1){
+//        [self openPicLibrary];
+//    }
+//}
+//
+//-(void)addCarema{
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//        picker.delegate = self;
+//        picker.allowsEditing = YES;
+//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        [self.superVC presentViewController:picker animated:YES completion:^{}];
+//    }else{
+//        //如果没有提示用户
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tip" message:@"Your device don't have camera" delegate:nil cancelButtonTitle:@"Sure" otherButtonTitles:nil];
+//        [alert show];
+//    }
+//}
 
--(void)addCarema{
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        picker.allowsEditing = YES;
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        [self.superVC presentViewController:picker animated:YES completion:^{}];
-    }else{
-        //如果没有提示用户
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tip" message:@"Your device don't have camera" delegate:nil cancelButtonTitle:@"Sure" otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
--(void)openPicLibrary{
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        picker.allowsEditing = YES;
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        [self.superVC presentViewController:picker animated:YES completion:^{
-        }];
-    }
-}
+//-(void)openPicLibrary{
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//        picker.delegate = self;
+//        picker.allowsEditing = YES;
+//        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//        [self.superVC presentViewController:picker animated:YES completion:^{
+//        }];
+//    }
+//}
 
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    UIImage *editImage = [info objectForKey:UIImagePickerControllerEditedImage];
-    [self.superVC dismissViewControllerAnimated:YES completion:^{
-        [self.delegate UUInputFunctionView:self sendPicture:editImage];
-    }];
-}
+//-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+//    UIImage *editImage = [info objectForKey:UIImagePickerControllerEditedImage];
+//    [self.superVC dismissViewControllerAnimated:YES completion:^{
+//        [self.delegate UUInputFunctionView:self sendPicture:editImage];
+//    }];
+//}
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-    [self.superVC dismissViewControllerAnimated:YES completion:nil];
-}
+//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+//    [self.superVC dismissViewControllerAnimated:YES completion:nil];
+//}
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];

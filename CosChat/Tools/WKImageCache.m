@@ -7,6 +7,7 @@
 //
 
 #import "WKImageCache.h"
+#import "UIImage+Circle.h"
 #import <CommonCrypto/CommonCrypto.h>
 
 #define kCacheName  @"com.coschat.icons"
@@ -111,11 +112,24 @@ static id _imageCache;
     NSURL *url = [NSURL URLWithString:strURL];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        UIImage *image = [UIImage imageWithData:data];
-        doneBlock(image,connectionError);
-        if (image) {
-            NSString *key = [strURL lastPathComponent];
-            [self storeImage:image forKey:key toDisk:YES];
+        if (!connectionError) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                @autoreleasepool {
+                    UIImage *initialImage = [UIImage imageWithData:data];
+                    UIImage *image = [UIImage circleImageWithImage:initialImage borderWidth:kBorderWidth borderColor:kBorderColor];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // 回到主线程，传值
+                        doneBlock(image,connectionError);
+                    });
+                    if (image) {
+                        // 存储图片
+                        NSString *key = [strURL lastPathComponent];
+                        [self storeImage:image forKey:key toDisk:YES];
+                    }
+                }
+            });
+        }else{
+            doneBlock(nil,connectionError);
         }
     }];
 }

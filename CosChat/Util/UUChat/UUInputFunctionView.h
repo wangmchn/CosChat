@@ -11,7 +11,7 @@
 @class UUInputFunctionView;
 
 @protocol UUInputFunctionViewDelegate <NSObject>
-
+@required
 // text
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message;
 
@@ -20,7 +20,9 @@
 
 // audio
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second;
+@optional
 
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView didPressedPlusButton:(UIButton *)plusButton;
 @end
 
 @interface UUInputFunctionView : UIView <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -34,7 +36,7 @@
 
 @property (nonatomic, retain) UIViewController *superVC;
 
-@property (nonatomic, assign) id<UUInputFunctionViewDelegate>delegate;
+@property (nonatomic, assign) id<UUInputFunctionViewDelegate> delegate;
 
 
 - (id)initWithSuperVC:(UIViewController *)superVC;

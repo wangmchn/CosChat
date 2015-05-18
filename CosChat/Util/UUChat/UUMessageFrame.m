@@ -17,6 +17,7 @@
     
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
     
+    self.showTime = message.showDateLabel;
     // 1、计算时间的位置
     if (_showTime){
         CGFloat timeY = ChatMargin;
@@ -47,7 +48,7 @@
     switch (_message.type) {
         case UUMessageTypeText:
             contentSize = [_message.strContent sizeWithFont:ChatContentFont  constrainedToSize:CGSizeMake(ChatContentW, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
- 
+            
             break;
         case UUMessageTypePicture:
             contentSize = CGSizeMake(ChatPicWH, ChatPicWH);

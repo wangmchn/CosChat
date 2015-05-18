@@ -7,148 +7,109 @@
 //
 
 #import "ChatModel.h"
-
-#import "UUMessage.h"
 #import "UUMessageFrame.h"
+#import <FMDB.h>
+#import "NSString+filePath.h"
+#define kDefaultLimit 20
+#define DATABASE_FILENAME_RECORDS @"records.sqlite"
+@interface ChatModel ()
+@property (nonatomic, strong) FMDatabase *db;
+@end
 
 @implementation ChatModel
+
+static NSString *previousTime = nil;
+- (instancetype)init{
+    if (self == [super init]) {
+        NSString *filePath = [NSString documentPathWithFileName:DATABASE_FILENAME_RECORDS];
+        self.db = [[FMDatabase alloc] initWithPath:filePath];
+        [self.db open];
+        // 创建数据库
+        [self.db executeUpdate:@"CREATE TABLE IF NOT EXISTS chat_records(id integer PRIMARY KEY, fromType integer CHECK (fromType in (100,101)), messageType integer CHECK (messageType in (0,1,2)), icon text,name text, content text, pic text,voice text, voiceTime text, showLabel integer)"];
+        
+    }
+    return self;
+}
 - (NSMutableArray *)items{
     if (_items == nil) {
         _items = [NSMutableArray array];
     }
     return _items;
 }
-//- (void)populateRandomDataSource {
-//    self.items = [NSMutableArray array];
-//    [self.items addObjectsFromArray:[self additems:5]];
-//}
-//
-//- (void)addRandomItemsToDataSource:(NSInteger)number{
-//    
-//    for (int i=0; i<number; i++) {
-//        [self.items insertObject:[[self additems:1] firstObject] atIndex:0];
-//    }
-//}
-
-// 添加自己的item
-- (void)addSpecifiedItem:(NSDictionary *)dic
-{
-    UUMessageFrame *messageFrame = [[UUMessageFrame alloc] init];
-    UUMessage *message = [[UUMessage alloc] init];
-    NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
-    
-    NSString *URLStr = @"http://img0.bdstatic.com/img/image/shouye/xinshouye/mingxing16.jpg";
-    [dataDic setObject:@(UUMessageFromMe) forKey:@"from"];
-    [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
-    [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
-    [dataDic setObject:URLStr forKey:@"strIcon"];
-    
-    [message setWithDict:dataDic];
-    [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
-    messageFrame.showTime = message.showDateLabel;
-    [messageFrame setMessage:message];
-    
-    if (message.showDateLabel) {
-        previousTime = dataDic[@"strTime"];
+- (NSInteger)maxCountLimit{
+    if (_maxCountLimit == 0) {
+        _maxCountLimit = kDefaultLimit;
     }
+    return _maxCountLimit;
+}
+#pragma mark - Public Methods
+- (void)addTextMessageWithIcon:(NSString *)strIcon strId:(NSString *)strId time:(NSString *)strTime name:(NSString *)strName strContent:(NSString *)strContent from:(MessageFrom)from{
+    UUMessage *message = [[UUMessage alloc] initWithIcon:strIcon strId:strId time:strTime name:strName from:from];
+    // text
+    message.strContent = strContent;
+    UUMessageFrame *messageFrame = [[UUMessageFrame alloc] init];
+    [messageFrame setMessage:message];
+    [message minuteOffSetStart:previousTime end:strTime];
+    
+    [self.items addObject:messageFrame];
+    
+}
+- (void)addPictureMessageWithIcon:(NSString *)strIcon strId:(NSString *)strId time:(NSString *)strTime name:(NSString *)strName picture:(UIImage *)picture from:(MessageFrom)from{
+    UUMessage *message = [[UUMessage alloc] initWithIcon:strIcon strId:strId time:strTime name:strName from:from];
+    // picture
+    message.picture = picture;
+    UUMessageFrame *messageFrame = [[UUMessageFrame alloc] init];
+    [messageFrame setMessage:message];
+    [message minuteOffSetStart:previousTime end:strTime];
+    
     [self.items addObject:messageFrame];
 }
-- (void)addSpecifiedItemFromOther:(NSDictionary *)dic
-{
+- (void)addVoiceMessageWithIcon:(NSString *)strIcon strId:(NSString *)strId time:(NSString *)strTime name:(NSString *)strName voice:(NSData *)voice strVoiceTime:(NSString *)strVoiceTime from:(MessageFrom)from{
+    UUMessage *message = [[UUMessage alloc] initWithIcon:strIcon strId:strId time:strTime name:strName from:from];
+    // voice
+    message.voice = voice;
+    message.strVoiceTime = strVoiceTime;
     UUMessageFrame *messageFrame = [[UUMessageFrame alloc] init];
-    UUMessage *message = [[UUMessage alloc] init];
-    NSMutableDictionary *dataDic = [NSMutableDictionary dictionaryWithDictionary:dic];
-    
-    NSString *URLStr = @"http://img0.bdstatic.com/img/image/shouye/xinshouye/mingxing16.jpg";
-    [dataDic setObject:@(UUMessageFromOther) forKey:@"from"];
-    [dataDic setObject:[[NSDate date] description] forKey:@"strTime"];
-    [dataDic setObject:@"Hello,Sister" forKey:@"strName"];
-    [dataDic setObject:URLStr forKey:@"strIcon"];
-    
-    [message setWithDict:dataDic];
-    [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
-    messageFrame.showTime = message.showDateLabel;
     [messageFrame setMessage:message];
+    [message minuteOffSetStart:previousTime end:strTime];
     
-    if (message.showDateLabel) {
-        previousTime = dataDic[@"strTime"];
-    }
     [self.items addObject:messageFrame];
 }
-//// 添加聊天item（一个cell内容）
-static NSString *previousTime = nil;
-//- (NSArray *)additems:(NSInteger)number
-//{
-//    NSMutableArray *result = [NSMutableArray array];
-//    
-//    for (int i=0; i<number; i++) {
-//        
-//        NSDictionary *dataDic = [self getDic];
-//        UUMessageFrame *messageFrame = [[UUMessageFrame alloc]init];
-//        UUMessage *message = [[UUMessage alloc] init];
-//        [message setWithDict:dataDic];
-//        [message minuteOffSetStart:previousTime end:dataDic[@"strTime"]];
-//        messageFrame.showTime = message.showDateLabel;
-//        [messageFrame setMessage:message];
-//        
-//        if (message.showDateLabel) {
-//            previousTime = dataDic[@"strTime"];
-//        }
-//        [result addObject:messageFrame];
-//    }
-//    return result;
-//}
-
-//// 如下:群聊（groupChat）
-//static int dateNum = 10;
-//- (NSDictionary *)getDic
-//{
-//    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-//    int randomNum = arc4random()%5;
-//    if (randomNum == UUMessageTypePicture) {
-//        [dictionary setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%zd.jpeg",arc4random()%2]] forKey:@"picture"];
-//    }else{
-//        // 文字出现概率4倍于图片（暂不出现Voice类型）
-//        randomNum = UUMessageTypeText;
-//        [dictionary setObject:[self getRandomString] forKey:@"strContent"];
-//    }
-//    NSDate *date = [[NSDate date]dateByAddingTimeInterval:arc4random()%1000*(dateNum++) ];
-//    [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];
-//    [dictionary setObject:@(randomNum) forKey:@"type"];
-//    [dictionary setObject:[date description] forKey:@"strTime"];
-//    // 这里判断是否是私人会话、群会话
-//    int index = _isGroupChat ? arc4random()%6 : 0;
-//    [dictionary setObject:[self getName:index] forKey:@"strName"];
-//    [dictionary setObject:[self getImageStr:index] forKey:@"strIcon"];
-//    
-//    return dictionary;
-//}
-//
-//- (NSString *)getRandomString {
-//    
-//    NSString *lorumIpsum = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non quam ac massa viverra semper. Maecenas mattis justo ac augue volutpat congue. Maecenas laoreet, nulla eu faucibus gravida, felis orci dictum risus, sed sodales sem eros eget risus. Morbi imperdiet sed diam et sodales.";
-//    
-//    NSArray *lorumIpsumArray = [lorumIpsum componentsSeparatedByString:@" "];
-//    
-//    int r = arc4random() % [lorumIpsumArray count];
-//    r = MAX(6, r); // no less than 6 words
-//    NSArray *lorumIpsumRandom = [lorumIpsumArray objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, r)]];
-//    
-//    return [NSString stringWithFormat:@"%@!!", [lorumIpsumRandom componentsJoinedByString:@" "]];
-//}
-//
-//- (NSString *)getImageStr:(NSInteger)index{
-//    NSArray *array = @[@"http://www.120ask.com/static/upload/clinic/article/org/201311/201311061651418413.jpg",
-//                       @"http://p1.qqyou.com/touxiang/uploadpic/2011-3/20113212244659712.jpg",
-//                       @"http://www.qqzhi.com/uploadpic/2014-09-14/004638238.jpg",
-//                       @"http://e.hiphotos.baidu.com/image/pic/item/5ab5c9ea15ce36d3b104443639f33a87e950b1b0.jpg",
-//                       @"http://ts1.mm.bing.net/th?&id=JN.C21iqVw9uSuD2ZyxElpacA&w=300&h=300&c=0&pid=1.9&rs=0&p=0",
-//                       @"http://ts1.mm.bing.net/th?&id=JN.7g7SEYKd2MTNono6zVirpA&w=300&h=300&c=0&pid=1.9&rs=0&p=0"];
-//    return array[index];
-//}
-//
-//- (NSString *)getName:(NSInteger)index{
-//    NSArray *array = @[@"Hi,Daniel",@"Hi,Juey",@"Hey,Jobs",@"Hey,Bob",@"Hah,Dane",@"Wow,Boss"];
-//    return array[index];
-//}
+- (void)loadMoreMessageFromDatabase:(RecordsLoadCompletionBlock)done{
+    
+    done();
+}
+#pragma mark - Private
+- (void)maintainLowMemoryCost{
+    if (self.items.count <= self.maxCountLimit) return;
+    
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        @autoreleasepool {
+            UUMessageFrame *messageFrame = (UUMessageFrame *)wself.items[0];
+            [wself.items removeObjectAtIndex:0];
+            // write to file...
+            // ....
+            
+            
+            
+        }
+    });
+    
+}
+- (void)writeMessageToDB:(UUMessage *)message{
+    switch (message.type) {
+        case UUMessageTypeText:
+            [self.db executeUpdateWithFormat:@"INSERT INTO chat_records(fromType,messageType,icon,name,content,time,show) VALUES(%d,%d,%@,%@,%@,%@,%d)",message.from,message.type,message.strIcon,message.strName,message.strContent,message.strTime,message.showDateLabel];
+            break;
+        case UUMessageTypePicture:
+            [self.db executeUpdateWithFormat:@"INSERT INTO chat_records(fromType,messageType,icon,name,pic,time,show) VALUES(%d,%d,%@,%@,%@,%@,%d)",message.from,message.type,message.strIcon,message.strName,message.picture,message.strTime,message.showDateLabel];
+            break;
+        case UUMessageTypeVoice:
+            [self.db executeUpdateWithFormat:@"INSERT INTO chat_records(fromType,messageType,icon,name,voice,voiceTime,time,show) VALUES(%d,%d,%@,%@,%@,%@,%@,%d)",message.from,message.type,message.strIcon,message.strName,message.strTime,message.strVoiceTime,message.strTime,message.showDateLabel];
+            break;
+        default:
+            break;
+    }
+}
 @end

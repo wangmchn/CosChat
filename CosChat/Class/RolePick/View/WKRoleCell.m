@@ -12,7 +12,7 @@
 
 #define kIconWH 79
 #define kMargin 10
-#define kBGColor [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0]
+#define kBGColor [UIColor colorWithRed:242.0/255.0 green:243.0/255.0 blue:242.0/255.0 alpha:0.9]
 @implementation WKRoleCell
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {

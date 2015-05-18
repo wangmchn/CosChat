@@ -28,7 +28,7 @@
 #pragma mark - Public Methods
 - (instancetype)initWithFrame:(CGRect)frame{
     if(self = [super initWithFrame:frame]){
-        self.backgroundColor = kBGColor;
+        self.backgroundColor = [UIColor clearColor];
         hasRGBA = NO;
     }
     return self;
@@ -98,6 +98,7 @@
 #pragma mark - Private Methods
 // 重绘
 - (void)drawRect:(CGRect)rect {
+//    NSLog(@"%f",self.normalSize);
     if (self.title) {
         if (self.font == nil) {
             self.font = [UIFont systemFontOfSize:self.normalSize];
@@ -172,5 +173,4 @@
         }
     }
 }
-
 @end

@@ -25,17 +25,24 @@ PODS:
     - AVOSCloud
   - AVOSCloudSNS (3.0.2):
     - AVOSCloud
+  - FMDB (2.5):
+    - FMDB/standard (= 2.5)
+  - FMDB/common (2.5)
+  - FMDB/standard (2.5):
+    - FMDB/common
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
   - AVOSCloud
   - AVOSCloudIM
   - AVOSCloudSNS
+  - FMDB
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   AVOSCloud: eeacd471d18b3e24c3cb0d089110453261084489
   AVOSCloudIM: d8ed59fd75220faada6b7305203ce9c42a16595d
   AVOSCloudSNS: 7d83ffbd3738b92c9ece62e93a65fa593587274b
+  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
 
 COCOAPODS: 0.36.4
