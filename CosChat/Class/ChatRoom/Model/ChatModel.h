@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "UUMessage+Mark.h"
+#import "UUMessage.h"
 typedef void(^RecordsLoadCompletionBlock)();
 
 @interface ChatModel : NSObject

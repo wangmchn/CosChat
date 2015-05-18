@@ -10,6 +10,20 @@
 #import "NSDate+Utils.h"
 
 @implementation UUMessage
+- (instancetype)initWithIcon:(NSString *)strIcon strId:(NSString *)strId time:(NSString *)strTime name:(NSString *)strName from:(MessageFrom)from{
+    if (self = [super init]) {
+        self.strIcon = strIcon;
+        self.strId = strId;
+        self.strTime = strTime;
+        self.strName = strName;
+        self.from = from;
+    }
+    return self;
+}
+- (void)setStrTime:(NSString *)strTime{
+    _strTime = [self changeTheDateString:strTime];
+    self.timeStamp = [[NSDate date] timeIntervalSinceReferenceDate]*1000;
+}
 - (void)setWithDict:(NSDictionary *)dict{
     
     self.strIcon = dict[@"strIcon"];

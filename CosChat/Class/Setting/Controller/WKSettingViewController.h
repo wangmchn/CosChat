@@ -1,13 +1,12 @@
 //
 //  WKSettingViewController.h
-//  CosChat
+//  Lottery
 //
-//  Created by zzx🐹 on 15/4/30.
-//  Copyright (c) 2015年 WeiKe. All rights reserved.
+//  Created by WK🐹 on 15/4/15.
+//  Copyright (c) 2015年 apple. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "WKBaseSettingViewController.h"
+@interface WKSettingViewController : WKBaseSettingViewController
 
-@interface WKSettingViewController : UITableViewController
-@property (nonatomic, strong) NSMutableArray *data;
 @end

@@ -15,17 +15,19 @@
 #import "UUInputFunctionView.h"
 #import "ChatModel.h"
 #import "Common.h"
+// zzx code
 #import "SlidingViewManager.h"
 #import "WKPopMenuView.h"
 #define kUUMessageIdentifier @"UUMessageCell"
 #define kUUIFViewH 40
 #define kChatContentY (self.chatTableView.contentOffset.y+64)
-@interface WKChatViewController () <UUMessageCellDelegate, UUInputFunctionViewDelegate, UITableViewDataSource,UITableViewDelegate,AVIMClientDelegate>
+@interface WKChatViewController () <UUMessageCellDelegate, UUInputFunctionViewDelegate, UITableViewDataSource,UITableViewDelegate,AVIMClientDelegate,WKPopMenuDelegate>
 @property (nonatomic, strong) ChatModel *chatModel;
 @property (nonatomic, strong) UITableView *chatTableView;
 @property (nonatomic, weak)   UUInputFunctionView *IFView;
 @property (nonatomic, assign) CGFloat cellMaxY;
 @property (nonatomic, strong) AVIMConversation *conversation;
+// zzx code
 @property(nonatomic,strong) WKPopMenuView *popMenuView;
 @property(nonatomic,strong) SlidingViewManager *slider;
 @end
@@ -94,10 +96,9 @@
     
     [UIView commitAnimations];
 }
--(void)popMenu
-{
-    self.popMenuView=[[WKPopMenuView alloc]init];
-    //    self.popMenuView.backgroundColor=[UIColor redColor];
+- (void)popMenu{
+    self.popMenuView = [[WKPopMenuView alloc] initWithSuperViewController:self];
+    self.popMenuView.delegate = self;
     self.slider=[[SlidingViewManager alloc]initWithInnerView:self.popMenuView containerView:self.view];
     [self.slider slideViewIn];
     
@@ -190,36 +191,44 @@
 
 #pragma mark - UUInputFuncDelegate
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message{
+    
+    __weak typeof(self) wself = self;
     [self.conversation sendMessage:[AVIMMessage messageWithContent:message] callback:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             NSLog(@"succeeded");
-//            self.chatModel addTextMessageWithIcon:<#(NSString *)#> strId:<#(NSString *)#> time:<#(NSString *)#> name:<#(NSString *)#> strContent:<#(NSString *)#> from:<#(MessageFrom)#>
-            [self.chatTableView reloadData];
-            [self tableViewScrollToBottom];
+            NSString *filePath = [[NSBundle mainBundle] pathForResource:@"superman" ofType:@"png"];
+            NSString *time = [[NSDate date] description];
+            [wself.chatModel addTextMessageWithIcon:filePath strId:@"1" time:time name:@"superman" strContent:message from:UUMessageFromMe];
+            [wself.chatTableView reloadData];
+            [wself tableViewScrollToBottom];
         }else{
             NSLog(@"%@",[error description]);
         }
     }];
     
 }
-- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image{
-    
-    NSDictionary *dic = @{@"picture": image,
-                          @"type": @(UUMessageTypePicture)};
-//    [self.chatModel addSpecifiedItem:dic];
-    [self.chatTableView reloadData];
-    [self tableViewScrollToBottom];
-}
+
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
-    NSDictionary *dic = @{@"voice": voice,
-                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)second],
-                          @"type": @(UUMessageTypeVoice)};
-//    [self.chatModel addSpecifiedItem:dic];
+    //
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"superman" ofType:@"png"];
+    NSString *time = [[NSDate date] description];
+    NSString *strVoiceTime = [NSString stringWithFormat:@"%ld",second];
+    [self.chatModel addVoiceMessageWithIcon:filePath strId:@"1" time:time name:@"superman" voice:voice strVoiceTime:strVoiceTime from:UUMessageFromMe];
+    
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
 }
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView didPressedPlusButton:(UIButton *)plusButton{
     [self popMenu];
+}
+#pragma mark -
+- (void)popMenu:(WKPopMenuView *)popMenu didFinishPickImage:(UIImage *)image{
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"superman" ofType:@"png"];
+    NSString *time = [[NSDate date] description];
+    [self.chatModel addPictureMessageWithIcon:filePath strId:@"1" time:time name:@"superman" picture:image from:UUMessageFromMe];
+
+    [self.chatTableView reloadData];
+    [self tableViewScrollToBottom];
 }
 #pragma mark - UUMessageCell delegate
 - (void)headImageDidClick:(UUMessageCell *)cell userId:(NSString *)userId{
@@ -231,13 +240,9 @@
 #pragma mark - IMClient delegate
 - (void)conversation:(AVIMConversation *)conversation didReceiveCommonMessage:(AVIMMessage *)message{
     self.conversation = conversation;
-    NSLog(@"------");
-    NSLog(@"%@",message.content);
-    [[[UIAlertView alloc] initWithTitle:nil message:message.content delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
-    NSDictionary *dic = @{@"strContent": message.content,
-                          @"type": @(UUMessageTypeText)};
-    
-//    [self.chatModel addSpecifiedItemFromOther:dic];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"superman" ofType:@"png"];
+    NSString *time = [[NSDate date] description];
+    [self.chatModel addTextMessageWithIcon:filePath strId:@"1" time:time name:@"superman" strContent:message.content from:UUMessageFromOther];
     [self.chatTableView reloadData];
     [self tableViewScrollToBottom];
 }

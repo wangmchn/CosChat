@@ -40,7 +40,8 @@ typedef enum {
 
 @property (nonatomic, assign) BOOL showDateLabel;
 
+@property (nonatomic, assign) int64_t timeStamp;
 - (void)setWithDict:(NSDictionary *)dict;
 - (void)minuteOffSetStart:(NSString *)start end:(NSString *)end;
-
+- (instancetype)initWithIcon:(NSString *)strIcon strId:(NSString *)strId time:(NSString *)strTime name:(NSString *)strName from:(MessageFrom)from;
 @end

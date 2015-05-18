@@ -15,8 +15,8 @@
 // text
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendMessage:(NSString *)message;
 
-// image
-- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image;
+//// image
+//- (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendPicture:(UIImage *)image;
 
 // audio
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second;

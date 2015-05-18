@@ -16,7 +16,6 @@
     _message = message;
     
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
-    
     self.showTime = message.showDateLabel;
     // 1、计算时间的位置
     if (_showTime){
