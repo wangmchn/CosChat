@@ -19,7 +19,7 @@
 #define kTagH 30
 #define kTagBGY 64+85
 #define kTagUPY 64+35
-
+#define kChageMargin 10
 #define WKMargin 2
 #define kAnimateInterval 0.3
 @interface WKSignatureController ()
@@ -93,13 +93,18 @@
      *  标签选择
      */
     int k=0;
-
+    
+    
+    CGFloat changeY;
     self.data=_titleArray;
     for (int i=0; i<5&&k<10; i++) {
         for (int j=0; j<2; j++) {
             UIView *tagBG=[[UIView alloc]init];
+            
+            
             tagBG.frame=CGRectMake(j*(kScreenWidth/2-1+WKMargin), kTagBGY+i*(kScreenHeight*0.09+WKMargin), kScreenWidth/2, kScreenHeight*0.09);
             tagBG.backgroundColor=[UIColor colorWithRed:0.919 green:1.000 blue:0.960 alpha:0.7];
+            changeY = CGRectGetMaxY(tagBG.frame);
             /**
              *  按钮button:tag从2000到2009
              */
@@ -107,7 +112,8 @@
             button.tag=k+2000;
 
 //            button.frame=CGRectMake(tagBG.frame.size.width*0.25, tagBG.frame.size.height*0.24, tagBG.frame.size.width*0.47, tagBG.frame.size.height*0.58);
-            button.frame=CGRectMake(tagBG.frame.size.width*0.25, tagBG.frame.size.height*0.24, kTagW, kTagH);
+            CGFloat y = (kScreenHeight*0.09-kTagH)/2;
+            button.frame=CGRectMake(tagBG.frame.size.width*0.25, y, kTagW, kTagH);
             [button setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
             button.selected=NO;
             [button setTitle:_titleArray.buttonTitleArray[k] forState:UIControlStateNormal];
@@ -121,8 +127,10 @@
     /**
      *  换一批button
      */
+    
     UIButton *change=[UIButton buttonWithType:UIButtonTypeCustom];
-    change.frame=CGRectMake(kScreenWidth*0.66, kScreenHeight*0.74, 100, 30);
+    
+    change.frame=CGRectMake(kScreenWidth*0.66, kChageMargin+changeY, 100, 30);
     change.backgroundColor=[UIColor clearColor];
     [change setTitle:@"换一批" forState:UIControlStateNormal];
     [change setTitleColor:kNormalColor forState:UIControlStateNormal];

@@ -22,6 +22,14 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor blackColor];
+        
+        UILabel *temp = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 400)];
+        temp.center = self.center;
+        temp.font = [UIFont boldSystemFontOfSize:20];
+        temp.textColor = [UIColor whiteColor];
+        temp.numberOfLines = 0;
+        temp.text = @"animating..waiting for another one!";
+        [self addSubview:temp];
     }
     return self;
 }
@@ -56,7 +64,7 @@
     NSString *body = @"{\"chatterName\":\"凤凰\",\"identifier\":\"33444\"}";
     NSData *bodyData = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:strURL];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0f];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:bodyData];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
