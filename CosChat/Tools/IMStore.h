@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 @class AVIMClient;
+@class AVIMConversation;
 @interface IMStore : NSObject
 @property (nonatomic, strong) AVIMClient *imClient;
+@property (nonatomic, strong) AVIMConversation *conversation;
+@property (nonatomic, strong) NSMutableDictionary *conversations;
 + (instancetype)sharedIMStore;
 @end

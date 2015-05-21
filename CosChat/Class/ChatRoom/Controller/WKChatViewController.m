@@ -15,9 +15,9 @@
 #import "UUInputFunctionView.h"
 #import "ChatModel.h"
 #import "Common.h"
-// zzx code
 #import "SlidingViewManager.h"
 #import "WKPopMenuView.h"
+#import "NSString+filePath.h"
 #define kUUMessageIdentifier @"UUMessageCell"
 #define kUUIFViewH 40
 #define kChatContentY (self.chatTableView.contentOffset.y+64)
@@ -27,7 +27,6 @@
 @property (nonatomic, weak)   UUInputFunctionView *IFView;
 @property (nonatomic, assign) CGFloat cellMaxY;
 @property (nonatomic, strong) AVIMConversation *conversation;
-// zzx code
 @property(nonatomic,strong) WKPopMenuView *popMenuView;
 @property(nonatomic,strong) SlidingViewManager *slider;
 @end
@@ -61,7 +60,6 @@
     // zzx code
     [self.slider slideViewOut];
     
-    //
     NSDictionary *userInfo = [notification userInfo];
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
@@ -116,7 +114,7 @@
     self.chatModel = [[ChatModel alloc] init];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"尔康";
-    
+    // 单击事件
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bgPressed:)];
     [self.view addGestureRecognizer:tap];
     
@@ -158,6 +156,26 @@
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    // 存聊天数据
+    if (self.chatModel.items.count > 0) {
+        UUMessage *message = [(UUMessageFrame *)[self.chatModel.items lastObject] message];
+#warning name若不显示，可通过from判断name
+        NSString *name = message.strName;
+        NSString *content = message.strContent;
+        NSString *time = message.strTime;
+        NSString *icon = message.strIcon;
+        NSMutableDictionary *converDict = [NSMutableDictionary dictionary];
+        converDict[@"show"] = @(YES);
+        converDict[@"content"] = @{@"name":name,
+                                   @"content":content,
+                                   @"time":time,
+                                   @"icon":icon};
+        
+        NSString *filePath = [NSString documentPathWithFileName:kRecordsPlist];
+        [converDict writeToFile:filePath atomically:YES];
+
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 - (void)didReceiveMemoryWarning {
@@ -207,7 +225,6 @@
     }];
     
 }
-
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second{
     //
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"superman" ofType:@"png"];
@@ -220,6 +237,18 @@
 }
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView didPressedPlusButton:(UIButton *)plusButton{
     [self popMenu];
+}
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView didChangedHeight:(CGFloat)change animateDuration:(CGFloat)timeInterval{
+    
+    __weak typeof(self) wself = self;
+    [UIView animateWithDuration:timeInterval animations:^{
+        CGRect frame = wself.chatTableView.frame;
+        frame.origin.y -= change;
+        wself.chatTableView.frame = frame;
+        
+    }];
+    
+    
 }
 #pragma mark -
 - (void)popMenu:(WKPopMenuView *)popMenu didFinishPickImage:(UIImage *)image{

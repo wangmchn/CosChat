@@ -12,9 +12,10 @@
 #import "WKMainViewController.h"
 #import "WKWelcomeController.h"
 #import "WKNavigationController.h"
+#import "NSString+filePath.h"
 #import <AVOSCloud/AVOSCloud.h>
-#define kAVOSAppId  @"ve7vnlnj9ug7qevx0iv9qcq1abxvk5dze748o70p66wpsb87"
-#define kAVOSAppKey @"7ti6hxh6iy86xp0yl3ox2a28j6v4otfmoxb56lsarvx1g06o"
+#define kAVOSAppId  @"idi55wuv2gfgvayujmujeiwar3abv1diszmip6efzcu18go1"
+#define kAVOSAppKey @"nye54hqlx4cof6ienvi215u63ikbaik8hdarlk8hah4vkc0q"
 @interface AppDelegate ()
 
 @end
@@ -24,11 +25,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [AVOSCloud setApplicationId:kAVOSAppId clientKey:kAVOSAppKey];
-    // 调试代码
-    [AVOSCloud setVerbosePolicy:kAVVerboseShow];
-    [AVLogger addLoggerDomain:AVLoggerDomainIM];
-    [AVLogger addLoggerDomain:AVLoggerDomainCURL];
-    [AVLogger setLoggerLevelMask:AVLoggerLevelAll];
+//    // 调试代码
+//    [AVOSCloud setVerbosePolicy:kAVVerboseShow];
+//    [AVLogger addLoggerDomain:AVLoggerDomainIM];
+//    [AVLogger addLoggerDomain:AVLoggerDomainCURL];
+//    [AVLogger setLoggerLevelMask:AVLoggerLevelAll];
+    
     // 注册通知
     if (iOS_VERSION >= 8.0) {
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil];
@@ -53,13 +55,12 @@
     return YES;
 }
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-    
     AVInstallation *currentInstallation = [AVInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-    NSLog(@"%@",userInfo);
+    NSLog(@"didReceiveRemoteNotification:%@",userInfo);
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"%@",error);
@@ -84,6 +85,10 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSString *filePath = [NSString documentPathWithFileName:kRecordsPlist];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+    }
 }
 
 @end

@@ -2,211 +2,163 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>DOTA</key>
+	<key>动漫</key>
 	<array>
 		<dict>
 			<key>content</key>
-			<string>春暖花开</string>
+			<string>嗯哼，其实人家是很害羞的拉！</string>
 			<key>name</key>
-			<string>凤凰</string>
+			<string>雏田</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>chutian.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>春暖花开</string>
+			<string>小樱，由我来守护！</string>
 			<key>name</key>
-			<string>火女</string>
+			<string>漩涡鸣人</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>xuanwomingren.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>春暖花开</string>
+			<string>小兰，等着我！</string>
 			<key>name</key>
-			<string>沙王</string>
+			<string>工藤新一</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>gongtengxinyi.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>春暖花开</string>
+			<string>新一，你在哪？</string>
 			<key>name</key>
-			<string>屠夫</string>
+			<string>毛利兰</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
-		</dict>
-		<dict>
-			<key>content</key>
-			<string>春暖花开</string>
-			<key>name</key>
-			<string>熊猫</string>
-			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>maolilan.png</string>
 		</dict>
 	</array>
-	<key>LOL</key>
+	<key>影视</key>
 	<array>
 		<dict>
 			<key>content</key>
-			<string>星辰大海</string>
+			<string>七个小老婆，哈哈哈哈！</string>
 			<key>name</key>
-			<string>蒙多</string>
+			<string>韦小宝</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>weixiaobao.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>星辰大海</string>
+			<string>每个星期才有一次，哼！</string>
 			<key>name</key>
-			<string>卡特琳娜</string>
+			<string>双儿</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>shuanger.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>星辰大海</string>
+			<string></string>
 			<key>name</key>
-			<string>德玛西亚</string>
+			<string>何以琛</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>heyichen.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>星辰大海</string>
+			<string></string>
 			<key>name</key>
-			<string>蛮王</string>
+			<string>赵默笙</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
-		</dict>
-		<dict>
-			<key>content</key>
-			<string>星辰大海</string>
-			<key>name</key>
-			<string>小炮</string>
-			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
-		</dict>
-		<dict>
-			<key>content</key>
-			<string>星辰大海</string>
-			<key>name</key>
-			<string>寒冰射手</string>
-			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
-		</dict>
-		<dict>
-			<key>content</key>
-			<string>星辰大海</string>
-			<key>name</key>
-			<string>安妮</string>
-			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>zhaomosheng.png</string>
 		</dict>
 	</array>
 	<key>名著</key>
 	<array>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>谢谢相公~~~</string>
 			<key>name</key>
-			<string>沙僧</string>
+			<string>白素贞</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>baisuzhen.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>娘子，啊哈？</string>
 			<key>name</key>
-			<string>金角大王</string>
+			<string>许仙</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>xuxian.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>一只手臂算什么？</string>
 			<key>name</key>
-			<string>白象王</string>
+			<string>杨过</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>yangguo.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>过儿！过儿！你在哪？</string>
 			<key>name</key>
-			<string>白骨精</string>
+			<string>小龙女</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>xiaolongnv.png</string>
 		</dict>
 	</array>
 	<key>最新</key>
 	<array>
 		<dict>
 			<key>content</key>
-			<string>星辰大海</string>
+			<string>为了你，我承包了所有仓库！</string>
 			<key>name</key>
-			<string>安妮</string>
+			<string>刘糨东</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>liujiangdong.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>我不是绿茶，我是奶荼！</string>
 			<key>name</key>
-			<string>奔波儿灞</string>
+			<string>奶荼妹</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>naitumei.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>尔康！尔康！</string>
 			<key>name</key>
-			<string>灞波儿奔</string>
+			<string>紫薇</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>ziwei.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>春暖花开</string>
+			<string>紫薇，你在哪？</string>
 			<key>name</key>
-			<string>熊猫</string>
+			<string>尔康</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>erkang.png</string>
 		</dict>
 	</array>
-	<key>游戏</key>
+	<key>海贼王</key>
 	<array>
 		<dict>
 			<key>content</key>
-			<string>星辰大海</string>
+			<string>我是要成为海贼王的男人！</string>
 			<key>name</key>
-			<string>蒙多</string>
+			<string>蒙奇.D.路飞</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>lufei.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>星辰大海</string>
+			<string>全世界都被我折服！</string>
 			<key>name</key>
-			<string>卡特琳娜</string>
+			<string>女帝.汉库克</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
-		</dict>
-		<dict>
-			<key>content</key>
-			<string>星辰大海</string>
-			<key>name</key>
-			<string>德玛西亚</string>
-			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
-		</dict>
-		<dict>
-			<key>content</key>
-			<string>星辰大海</string>
-			<key>name</key>
-			<string>蛮王</string>
-			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>hankuke.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
@@ -261,19 +213,19 @@
 	<array>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>Only  you~~~</string>
 			<key>name</key>
-			<string>沙僧</string>
+			<string>唐三藏</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>tangsanzang.png</string>
 		</dict>
 		<dict>
 			<key>content</key>
-			<string>西天取经</string>
+			<string>我已经按捺不住了！</string>
 			<key>name</key>
-			<string>金角大王</string>
+			<string>白骨精</string>
 			<key>url</key>
-			<string>http://192.168.0.177:8080/Cos_Chat/img/cabin.png</string>
+			<string>baigujing.png</string>
 		</dict>
 		<dict>
 			<key>content</key>

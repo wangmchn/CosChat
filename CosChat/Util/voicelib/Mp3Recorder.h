@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol Mp3RecorderDelegate <NSObject>
+@optional
 - (void)failRecord;
 - (void)beginConvert;
 - (void)endConvertWithData:(NSData *)voiceData;

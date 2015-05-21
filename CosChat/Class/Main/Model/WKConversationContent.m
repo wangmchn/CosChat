@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 yq. All rights reserved.
 //
 
-#import "WKMatchContent.h"
+#import "WKConversationContent.h"
 
-@implementation WKMatchContent
+@implementation WKConversationContent
 - (instancetype)initWithIcon:(UIImage *)icon name:(NSString *)name content:(NSString *)content time:(NSString *)time{
     if (self = [super init]) {
         self.icon = icon;

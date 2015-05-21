@@ -10,7 +10,6 @@
 #import "Mp3Recorder.h"
 #import "UUProgressHUD.h"
 
-
 // MainScreen Height&Width
 #define Main_Screen_Height      [[UIScreen mainScreen] bounds].size.height
 #define Main_Screen_Width       [[UIScreen mainScreen] bounds].size.width
@@ -37,9 +36,9 @@
 #define RECT_CHANGE_height(v,h)     CGRectMake(X(v), Y(v), WIDTH(v), h)
 #define RECT_CHANGE_size(v,w,h)     CGRectMake(X(v), Y(v), w, h)
 
-
-@interface UUInputFunctionView ()<UITextViewDelegate,Mp3RecorderDelegate>
-{
+#define kDefaultHeight 44
+#define kItemWH 40
+@interface UUInputFunctionView ()<WKTextViewDelegate,Mp3RecorderDelegate> {
     BOOL isbeginVoiceRecord;
     Mp3Recorder *MP3;
     NSInteger playTime;
@@ -50,13 +49,12 @@
 @end
 
 @implementation UUInputFunctionView
-
 - (id)initWithSuperVC:(UIViewController *)superVC
 {
     self.superVC = superVC;
     CGFloat VCWidth = Main_Screen_Width;
     CGFloat VCHeight = Main_Screen_Height;
-    CGRect frame = CGRectMake(0, VCHeight-40, VCWidth, 40);
+    CGRect frame = CGRectMake(0, VCHeight-kDefaultHeight, VCWidth, kDefaultHeight);
     
     self = [super initWithFrame:frame];
     if (self) {
@@ -88,8 +86,9 @@
         [self.btnVoiceRecord setBackgroundImage:[UIImage imageNamed:@"chat_message_back"] forState:UIControlStateNormal];
         [self.btnVoiceRecord setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [self.btnVoiceRecord setTitleColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
-        [self.btnVoiceRecord setTitle:@"Hold to Talk" forState:UIControlStateNormal];
-        [self.btnVoiceRecord setTitle:@"Release to Send" forState:UIControlStateHighlighted];
+        [self.btnVoiceRecord setTitle:@"按住 说话" forState:UIControlStateNormal];
+        [self.btnVoiceRecord setTitle:@"松开 结束" forState:UIControlStateHighlighted];
+        self.btnVoiceRecord.titleLabel.font = [UIFont boldSystemFontOfSize:17];
         [self.btnVoiceRecord addTarget:self action:@selector(beginRecordVoice:) forControlEvents:UIControlEventTouchDown];
         [self.btnVoiceRecord addTarget:self action:@selector(endRecordVoice:) forControlEvents:UIControlEventTouchUpInside];
         [self.btnVoiceRecord addTarget:self action:@selector(cancelRecordVoice:) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchCancel];
@@ -98,23 +97,24 @@
         [self addSubview:self.btnVoiceRecord];
         
         //输入框
-        self.TextViewInput = [[UITextView alloc] initWithFrame:CGRectMake(45, 5, Main_Screen_Width-2*45, 30)];
-//        [self.TextViewInput setFont:[UIFont systemFontOfSize:13]];
+        self.TextViewInput = [[WKTextView alloc] initWithFrame:CGRectMake(45, 5, Main_Screen_Width-2*45, 34)];
+        self.TextViewInput.myDelegate = self;
+        [self.TextViewInput setFont:[UIFont systemFontOfSize:14]];
         self.TextViewInput.layer.cornerRadius = 4;
         self.TextViewInput.layer.masksToBounds = YES;
         self.TextViewInput.delegate = self;
-        self.TextViewInput.layer.borderWidth = 1;
+        self.TextViewInput.layer.borderWidth = 0.5;
         self.TextViewInput.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.4] CGColor];
         [self addSubview:self.TextViewInput];
         
-        //输入框的提示语
-        placeHold = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 200, 30)];
-        placeHold.text = @"Input the contents here";
-        placeHold.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
-        [self.TextViewInput addSubview:placeHold];
+//        //输入框的提示语
+//        placeHold = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 200, 30)];
+//        placeHold.text = @"Input the contents here";
+//        placeHold.textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.8];
+//        [self.TextViewInput addSubview:placeHold];
         
         //分割线
-        self.layer.borderWidth = 1;
+        self.layer.borderWidth = 0.5;
         self.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.3].CGColor;
         
         //添加通知
@@ -262,7 +262,18 @@
 
 
 #pragma mark - TextViewDelegate
-
+- (void)textView:(WKTextView *)textView heightChanged:(CGFloat)change animateDuration:(CGFloat)timeInterval{
+    if ([self.delegate respondsToSelector:@selector(UUInputFunctionView:didChangedHeight:animateDuration:)]) {
+        [self.delegate UUInputFunctionView:self didChangedHeight:change animateDuration:timeInterval];
+    }
+    __weak typeof(self) wself = self;
+    [UIView animateWithDuration:timeInterval animations:^{
+        CGRect frame = wself.frame;
+        frame.origin.y -= change;
+        frame.size.height += change;
+        wself.frame = frame;
+    }];
+}
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     if (self.TextViewInput.text.length>0)
@@ -343,7 +354,7 @@
 //}
 
 -(void)dealloc{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

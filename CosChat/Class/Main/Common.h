@@ -30,5 +30,6 @@
 #define kRoleFileName @"roleInfo.archiver"
 #define kTagFileName @"tag.plist"
 
+#define kRecordsPlist @"records.plist"
 #define kAddress @"http://192.168.0.177:8080/Cos_Chat/"
 #endif

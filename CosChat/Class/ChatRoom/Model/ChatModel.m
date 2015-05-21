@@ -12,13 +12,13 @@
 #import "NSString+filePath.h"
 #define kDefaultLimit 20
 
-#define CREATE_TABLE_SQL @"CREATE TABLE IF NOT EXISTS chat_records(id integer PRIMARY KEY, fromType integer CHECK (fromType in (100,101)), messageType integer CHECK (messageType in (0,1,2)), icon text,name text, content text, pic text,voice text, voiceTime text, showLabel integer,`timestamp` BIGINT NOT NULL,)"
+#define CREATE_TABLE_SQL @"CREATE TABLE IF NOT EXISTS chat_records(id integer PRIMARY KEY, fromType integer CHECK (fromType in (100,101)), messageType integer CHECK (messageType in (0,1,2)), icon text,name text, content text, pic text,voice text, voiceTime text, showLabel integer,timestamp BIGINT NOT NULL)"
 
 //#define CREATE_MSG_TABLE_SQL @"CREATE TABLE IF NOT EXISTS `msgs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `msg_id` VARCHAR(64) NOT NULL,`convid` VARCHAR(64) NOT NULL,`object` BLOB,`timestamp` BIGINT NOT NULL, `type` INT NOT NULL, `from` VARCHAT(64), `toClients` BLOB)"
 //
 //#define CREATE_MSG_UNIQUE_INDEX_SQL @"CREATE UNIQUE INDEX IF NOT EXISTS `msg_index` ON `msgs` (`convid`,`timestamp`,`msg_id`)"
 
-#define INSERT_MSG_SQL @"INSERT INTO `msgs`(`msg_id`, `convid`, `object`, `timestamp`, `type`, `from`, `toClients`) VALUES(?, ?, ?, ?, ?, ?, ?)"
+//#define INSERT_MSG_SQL @"INSERT INTO `msgs`(`msg_id`, `convid`, `object`, `timestamp`, `type`, `from`, `toClients`) VALUES(?, ?, ?, ?, ?, ?, ?)"
 
 #define QUERY_MSG_SQL @"SELECT * from msgs where convid=? and timestamp<? order by timestamp limit ?"
 
@@ -86,7 +86,6 @@ static NSString *previousTime = nil;
     message.strVoiceTime = strVoiceTime;
     message.type = UUMessageTypeVoice;
     UUMessageFrame *messageFrame = [[UUMessageFrame alloc] init];
-    [message minuteOffSetStart:previousTime end:strTime];
     [message minuteOffSetStart:previousTime end:strTime];
     previousTime = strTime;
     

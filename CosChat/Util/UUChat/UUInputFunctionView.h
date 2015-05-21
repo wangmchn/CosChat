@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WKTextView.h"
 @class UUInputFunctionView;
 
 @protocol UUInputFunctionViewDelegate <NSObject>
@@ -20,9 +20,24 @@
 
 // audio
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView sendVoice:(NSData *)voice time:(NSInteger)second;
-@optional
 
+// add by Mark wang
+@optional
+/**
+ *  右边按钮的点击事件
+ *
+ *  @param funcView   UUInputFunctionView
+ *  @param plusButton 点击的按钮
+ */
 - (void)UUInputFunctionView:(UUInputFunctionView *)funcView didPressedPlusButton:(UIButton *)plusButton;
+/**
+ *  当InputFunction高度改变时，通知代理
+ *
+ *  @param funcView     InputFunctionView
+ *  @param change       高度改变的值
+ *  @param timeInterval 动画持续事件
+ */
+- (void)UUInputFunctionView:(UUInputFunctionView *)funcView didChangedHeight:(CGFloat)change animateDuration:(CGFloat)timeInterval;
 @end
 
 @interface UUInputFunctionView : UIView <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -30,7 +45,7 @@
 @property (nonatomic, retain) UIButton *btnSendMessage;
 @property (nonatomic, retain) UIButton *btnChangeVoiceState;
 @property (nonatomic, retain) UIButton *btnVoiceRecord;
-@property (nonatomic, retain) UITextView *TextViewInput;
+@property (nonatomic, retain) WKTextView *TextViewInput;
 
 @property (nonatomic, assign) BOOL isAbleToSendTextMessage;
 

@@ -4,8 +4,9 @@
 //
 //  Created by zzx🐹 on 15/5/3.
 //  Copyright (c) 2015年 WeiKe. All rights reserved.
-//
-
+//  
+//  CGRectMake(kDescXMargin+i*(tagGap+kTagW), kTagY, kTagW, kTagH);
+//  
 #import "WKSignatureController.h"
 #import "WKNavigationController.h"
 #import "WKMainViewController.h"
@@ -13,13 +14,18 @@
 #import "Common.h"
 #import "WKButtonData.h"
 #import "WKTagView.h"
+
+#define kTagW 74
+#define kTagH 30
+#define kTagBGY 64+85
+#define kTagUPY 64+35
+
 #define WKMargin 2
 #define kAnimateInterval 0.3
 @interface WKSignatureController ()
 {
     WKButtonData *_titleArray;
 }
-
 @property(nonatomic,strong) WKButtonData *data;
 @property(nonatomic,strong) NSMutableArray *arrayOfButton;
 @property(nonatomic,strong) NSMutableArray *arrayOfTitle;
@@ -43,9 +49,9 @@
 /**
  *  获取标签数据
  */
-- (void)getButtonData
-{
-    NSMutableArray *array=[NSMutableArray arrayWithObjects:@"我的",@"好的",@"他的",@"你的",@"进来",@"发饿",@"啊今",@"飞啊服务",@"无法",@"不是",@"网盘",@"额头",@"请我",@"容易",@"知道",@"放弃",@"垃圾",@"安妮",@"我是",@"秋游",@"百度",@"手机",@"大家", nil];
+- (void)getButtonData{
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"UserSignature" ofType:@"plist"];
+    NSMutableArray *array = [NSMutableArray arrayWithContentsOfFile:filePath];
     NSMutableArray *tempArray=[NSMutableArray array];
     tempArray=array;
     NSUInteger k=self.arrayOfButton.count;
@@ -78,8 +84,8 @@
     /**
      *  已选择
      */
-    UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth*0.05, kScreenHeight*0.14, 125, 30)];
-    label.text=@"已选择(至多3个)";
+    UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth*0.05, 64+12, 125, 15)];
+    label.text=@"已选择 (至多3个)";
     label.font=[UIFont systemFontOfSize:15];
     label.textColor=[UIColor whiteColor];
     [self.view addSubview:label];
@@ -92,7 +98,7 @@
     for (int i=0; i<5&&k<10; i++) {
         for (int j=0; j<2; j++) {
             UIView *tagBG=[[UIView alloc]init];
-            tagBG.frame=CGRectMake(j*(kScreenWidth/2-1+WKMargin), kScreenHeight*0.272+i*(kScreenHeight*0.09+WKMargin), kScreenWidth/2, kScreenHeight*0.09);
+            tagBG.frame=CGRectMake(j*(kScreenWidth/2-1+WKMargin), kTagBGY+i*(kScreenHeight*0.09+WKMargin), kScreenWidth/2, kScreenHeight*0.09);
             tagBG.backgroundColor=[UIColor colorWithRed:0.919 green:1.000 blue:0.960 alpha:0.7];
             /**
              *  按钮button:tag从2000到2009
@@ -100,7 +106,8 @@
             WKTagView *button=[[WKTagView alloc] init];
             button.tag=k+2000;
 
-            button.frame=CGRectMake(tagBG.frame.size.width*0.25, tagBG.frame.size.height*0.24, tagBG.frame.size.width*0.47, tagBG.frame.size.height*0.58);
+//            button.frame=CGRectMake(tagBG.frame.size.width*0.25, tagBG.frame.size.height*0.24, tagBG.frame.size.width*0.47, tagBG.frame.size.height*0.58);
+            button.frame=CGRectMake(tagBG.frame.size.width*0.25, tagBG.frame.size.height*0.24, kTagW, kTagH);
             [button setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
             button.selected=NO;
             [button setTitle:_titleArray.buttonTitleArray[k] forState:UIControlStateNormal];
@@ -195,11 +202,12 @@
         
         
         
+//        [UIView transitionWithView:tag duration:kAnimateInterval options:0 animations:^{
+//            tag.frame=CGRectMake(kScreenWidth*0.06+count*kScreenWidth*0.323, kScreenHeight*0.20, kTagW, kTagH);
+//        } completion:nil];
         [UIView transitionWithView:tag duration:kAnimateInterval options:0 animations:^{
-            tag.frame=CGRectMake(kScreenWidth*0.06+count*kScreenWidth*0.323, kScreenHeight*0.20, kScreenWidth*0.234, kScreenHeight*0.05);
-        } completion:^(BOOL finished) {
-            NSLog(@"动画结束");
-        }];
+            tag.frame=CGRectMake(kScreenWidth*0.06+count*kScreenWidth*0.323, kTagUPY, kTagW, kTagH);
+        } completion:nil];
         [tag setBackgroundImage:[UIImage imageNamed:@"tag_nor"] forState:UIControlStateNormal];
         NSString *title=button.titleLabel.text;
         [tag setTitle:title forState:UIControlStateNormal];
@@ -209,13 +217,13 @@
     }
     else if(count==3)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:@"只能选择3个标签" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"只能选择3个标签" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
     }
     else if(button.selected==YES)
     {
         
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:@"请选择其他标签" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"请选择其他标签" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
         [alert show];
         
     }
@@ -247,7 +255,7 @@
         for (WKTagView *btn in self.arrayOfButton) {
             CGFloat x=btn.frame.origin.x;
             [UIView transitionWithView:button duration:kAnimateInterval options:0 animations:^{
-                btn.frame=CGRectMake(x-kScreenWidth*0.323, kScreenHeight*0.2, kScreenWidth*0.234, kScreenHeight*0.05);
+                btn.frame=CGRectMake(x-kScreenWidth*0.323, kTagUPY, kTagW, kTagH);
                 btn.tag=btn.tag-1;
             } completion:^(BOOL finished) {
                 NSLog(@"动画结束");
@@ -256,6 +264,8 @@
         }
     }else
     {
+        
+        // 这段是做什么的？
         for (WKTagView *btn in self.arrayOfButton) {
             if (btn.tag-1000>2) {
                 CGFloat x=btn.frame.origin.x;
@@ -270,4 +280,5 @@
         }
     }
 }
+
 @end

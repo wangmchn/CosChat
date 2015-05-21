@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@interface WKMatchContent : NSObject
+@interface WKConversationContent : NSObject
 @property (nonatomic, copy)   NSString *name;
 @property (nonatomic, copy)   NSString *content;
 @property (nonatomic, copy)   NSString *time;

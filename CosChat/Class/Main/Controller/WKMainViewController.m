@@ -15,9 +15,10 @@
 // View
 #import "WKTagView.h"
 #import "WKMatchView.h"
+#import "WKConversationView.h"
 // Model
 #import "IMStore.h"
-#import "WKMatchContent.h"
+#import "WKConversationContent.h"
 #import "WKRoleInfo.h"
 #import "NSString+filePath.h"
 #import "UIImage+Circle.h"
@@ -43,9 +44,14 @@
 #define kNextTag 1000
 #define kSetMargin 30
 #define kWKY 35
-@interface WKMainViewController () <WKMatchViewDelegate,AVIMClientDelegate>
+
+@interface WKMainViewController () <WKConversationViewDelegate,AVIMClientDelegate,WKMatchViewDelegate>{
+    WKMatchView *_matchView;
+    WKConversationView *_conversationView;
+}
 @property (nonatomic, strong) WKRoleInfo *roleInfo;
 @property (nonatomic, strong) NSArray *titlesArray;
+@property (nonatomic, weak)   UIButton *matchButton;
 @end
 
 @implementation WKMainViewController
@@ -79,13 +85,49 @@
     [self addTitleBar];
     [self setUI];
 }
+- (void)whetherShowConversation{
+    NSString *filePath = [NSString documentPathWithFileName:kRecordsPlist];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+        BOOL show = [dict[@"show"] boolValue];
+        NSDictionary *contentDict = dict[@"content"];
+        if (show) {
+            WKConversationView *conversationView = [[WKConversationView alloc] initWithFrame:CGRectMake(15, 442.0/568*kScreenHeight, kScreenWidth-30, 87)];
+            conversationView.delegate = self;
+            NSMutableString *time = contentDict[@"time"];
+            time = (NSMutableString *)[time stringByReplacingOccurrencesOfString:@" " withString:@"/"];
+            time = (NSMutableString *)[time lastPathComponent];
+            NSLog(@"%@",time);
+            WKConversationContent *content = [[WKConversationContent alloc] initWithIcon:[UIImage imageNamed:@"superman"] name:@"超人" content:contentDict[@"content"] time:time];
+            conversationView.content = content;
+            
+            [self.view addSubview:conversationView];
+            self.matchButton.hidden = YES;
+            
+            dict[@"show"] = @(NO);
+            [dict writeToFile:filePath atomically:YES];
+            _conversationView = conversationView;
+        }
+    }
+}
 - (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
+    [self whetherShowConversation];
+    [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 - (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:YES];
+    [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+
+}
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    if (_matchView) {
+        [_matchView removeFromSuperview];
+    }
+    if (_conversationView) {
+        [_conversationView removeFromSuperview];
+    }
 }
 #pragma mark -
 // 导航栏隐藏，自己添加一个无背景的假导航栏
@@ -179,32 +221,32 @@
     [match setTitle:@"开始匹配" forState:UIControlStateNormal];
     [match addTarget:self action:@selector(match:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:match];
+    self.matchButton = match;
 }
 - (void)match:(UIButton *)sender{
-    // 与leanCloud建立连接
-    IMStore *store = [IMStore sharedIMStore];
-    NSString *clientId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
-    [store.imClient openWithClientId:clientId callback:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            WKMatchView *match = [[WKMatchView alloc] initWithFrame:CGRectMake(15, 442.0/568*kScreenHeight, kScreenWidth-30, 87)];
-            match.delegate = self;
-            WKMatchContent *content = [[WKMatchContent alloc] initWithIcon:[UIImage imageNamed:@"superman"] name:@"超人" content:@"super~~~man!!" time:@"17:58"];
-            match.content = content;
-            [self.view addSubview:match];
-            sender.hidden = YES;
-        }else{
-            NSLog(@"%@",[error description]);
-        }
-    }];
+    // 匹配动画界面
+    WKMatchView *matchView = [[WKMatchView alloc] initWithFrame:self.view.frame];
+    matchView.delegate = self;
+    [self.view addSubview:matchView];
+    
 }
 #pragma mark - Match View delegate
-- (void)matchViewDidPressedByUser:(WKMatchView *)matchView{
+- (void)matchView:(WKMatchView *)matchView didFinishMatchWithInfo:(NSDictionary *)info{
+    
+    WKChatViewController *chat = [[WKChatViewController alloc] init];
+    [self.navigationController pushViewController:chat animated:YES];
+    _matchView = matchView;
+}
+
+- (void)conversationViewDidPressedByUser:(WKConversationView *)conversationView{
+    // 设置已显示
     WKChatViewController *chatRoom = [[WKChatViewController alloc] init];
     [self.navigationController pushViewController:chatRoom animated:YES];
+    _conversationView = conversationView;
 }
-- (void)matchViewDidDisapper:(WKMatchView *)matchView{
-    [matchView removeFromSuperview];
-    
+- (void)conversationViewDidDisapper:(WKConversationView *)conversationView{
+    [conversationView removeFromSuperview];
+    // 删除已显示
     IMStore *store = [IMStore sharedIMStore];
     [store.imClient closeWithCallback:^(BOOL succeeded, NSError *error) {
         NSLog(@"%@",error);
